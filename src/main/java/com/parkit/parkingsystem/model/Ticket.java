@@ -35,7 +35,6 @@ public class Ticket {
     }
 
     public double getPrice() {
-    	System.out.format("%.3f ", price);
         return price;
     }
 
@@ -44,20 +43,19 @@ public class Ticket {
     }
 
     public LocalDateTime getInTime() {
-    	inTime = LocalDateTime.now();
         return inTime;
     }
 
-    public LocalDateTime setInTime(LocalDateTime inTime) {
-        return this.inTime;
+    public void setInTime(LocalDateTime inTime) {
+    	this.inTime=inTime;
     }
 
     public LocalDateTime getOutTime() {
-    	outTime = LocalDateTime.now();
         return outTime;
     }
 
-    public LocalDateTime setOutTime(LocalDateTime outTime) {
-        return this.outTime;
+    public void setOutTime(LocalDateTime outTime) {
+        this.outTime=outTime;
     }
+
 }

@@ -16,6 +16,10 @@ public class ParkingSpotDAO {
     private static final Logger logger = LogManager.getLogger("ParkingSpotDAO");
 
     public DataBaseConfig dataBaseConfig = new DataBaseConfig();
+    
+	public DataBaseConfig getDataBaseConfig() {
+		return dataBaseConfig;
+	}
 
     public int getNextAvailableSlot(ParkingType parkingType){
         Connection con = null;
@@ -56,9 +60,4 @@ public class ParkingSpotDAO {
             getDataBaseConfig().closeConnection(con);
         }
     }
-
-	public DataBaseConfig getDataBaseConfig() {
-		return dataBaseConfig;
-	}
-
 }

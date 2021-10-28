@@ -31,23 +31,26 @@ public class ParkingService {
     public void processIncomingVehicle() {
         try{
             ParkingSpot parkingSpot = getNextParkingNumberIfAvailable();
-            if(parkingSpot !=null && parkingSpot.getId() > 0){
+            if(parkingSpot !=null && parkingSpot.getId() > 0 ){
                 String vehicleRegNumber = getVehichleRegNumber();
-                parkingSpot.isAvailable();
+                parkingSpot.setAvailable(false);
                 parkingSpotDAO.updateParking(parkingSpot);//allot this parking space and mark it's availability as false
-    
+                
                 Ticket ticket = new Ticket();
                 LocalDateTime inTime = LocalDateTime.now();
-                ticket.getInTime();
                 //ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
-                // ticket.setId(ticketID);
+                //ticket.setId(ticketID);
                 ticket.setParkingSpot(parkingSpot);
                 ticket.setVehicleRegNumber(vehicleRegNumber);
                 ticket.setPrice(0);
-                ticketDAO.saveTicket(ticket);
+                ticket.setInTime(inTime);
+                ticket.setOutTime(null);
+                ticketDAO.saveTicket(ticket); //RETURN false ?!
+                // TODO: un truc pour checker l'immatriculation du vehicule deja un ticket sauvegarder en base de donnée contante
+                // DBConstants.CHECK_IF_VEHICULE_COME_ONCE;
                 System.out.println("Generated Ticket and saved in DB");
                 System.out.println("Please park your vehicle in spot number: "+parkingSpot.getId());
-                System.out.println("Recorded in-time for vehicle number: "+vehicleRegNumber+" - The:"+inTime.toLocalDate() +" at "+inTime.toLocalTime());
+                System.out.println("Recorded in-time for vehicle number: "+vehicleRegNumber+" - The: "+inTime.toLocalDate()+" at "+inTime.toLocalTime());
             }
         }catch(Exception e){
             logger.error("Unable to process incoming vehicle",e);
@@ -96,20 +99,25 @@ public class ParkingService {
             }
         }
     }
-
+    
     public void processExitingVehicle() {
         try{
             String vehicleRegNumber = getVehichleRegNumber();
             Ticket ticket = ticketDAO.getTicket(vehicleRegNumber);
+            
+            LocalDateTime inTime = LocalDateTime.from(ticket.getInTime());
+            ticket.setInTime(inTime);
+            Thread.sleep(1000);
             LocalDateTime outTime = LocalDateTime.now();
-            ticket.getOutTime();
+            ticket.setOutTime(outTime);
+
             fareCalculatorService.calculateFare(ticket);
             if(ticketDAO.updateTicket(ticket)) {
                 ParkingSpot parkingSpot = ticket.getParkingSpot();
                 parkingSpot.setAvailable(true);
                 parkingSpotDAO.updateParking(parkingSpot);
                 System.out.println("Please pay the parking fare: " + ticket.getPrice());
-                System.out.println("Recorded out-time for vehicle number:" + ticket.getVehicleRegNumber() + " The: " + outTime.toLocalDate() + " at " + outTime.toLocalTime());
+                System.out.println("Recorded out-time for vehicle number:" + ticket.getVehicleRegNumber() +" - The: "+outTime.toLocalDate()+" at "+outTime.toLocalTime());
             }else{
                 System.out.println("Unable to update ticket information. Error occurred");
             }
