@@ -6,7 +6,9 @@ import java.time.LocalDateTime;
 import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.model.Ticket;
 
+
 public class FareCalculatorService {
+	
 
     public void calculateFare(Ticket ticket){
         if( (ticket.getOutTime()== null) || (ticket.getOutTime().isBefore(ticket.getInTime())) ){
@@ -29,7 +31,7 @@ public class FareCalculatorService {
 	                	ticket.setPrice(Fare.CAR_RATE_PER_HOUR);
 	                }
 	                else {
-	                	ticket.setPrice(timeInHours* Fare.CAR_RATE_PER_HOUR);
+	                	ticket.setPrice(timeInHours * Fare.CAR_RATE_PER_HOUR + 1.5);
 	               }
 	                break;
 	            }
@@ -39,7 +41,7 @@ public class FareCalculatorService {
 	                	ticket.setPrice(Fare.BIKE_RATE_PER_HOUR);
 	                }
 	                else {
-	                	ticket.setPrice(timeInHours * Fare.BIKE_RATE_PER_HOUR);
+	                	ticket.setPrice(timeInHours * Fare.BIKE_RATE_PER_HOUR + 1);
 	            	}
 	                break;
 	            }
@@ -55,11 +57,10 @@ public class FareCalculatorService {
 	    return Duration.between(inHour,outHour);
     }
     
-    //Cacul de l'utilisateur reccurent
-    public boolean CheckIfVehiculeComeMoreThanOnce() {
-    /*	if () {
-    	ticket.setPrice(Fare.CAR_RATE_PER_HOUR);
-    	}	*/
-    	return true;
+    //Cacul de l'utilisateur reccurent doit repondre si oui ou non 
+    public Double checkIfVehiculeComeMoreThanOnce() {
+    	//if (ticket)
+    	//ticketDAO.getIfRecurrentUser();
+    	return new Double(0);
     }
 }

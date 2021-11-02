@@ -16,28 +16,27 @@ public class ParkingSpotDAO {
     private static final Logger logger = LogManager.getLogger("ParkingSpotDAO");
 
     public DataBaseConfig dataBaseConfig = new DataBaseConfig();
-    
-	public DataBaseConfig getDataBaseConfig() {
-		return dataBaseConfig;
-	}
 
     public int getNextAvailableSlot(ParkingType parkingType){
         Connection con = null;
         int result=-1;
         try {
-            con = getDataBaseConfig().getConnection();
+            con = dataBaseConfig.getConnection();
             PreparedStatement ps = con.prepareStatement(DBConstants.GET_NEXT_PARKING_SPOT);
             ps.setString(1, parkingType.toString());
             ResultSet rs = ps.executeQuery();
+            
             if(rs.next()){
                 result = rs.getInt(1);
             }
-            getDataBaseConfig().closeResultSet(rs);
-            getDataBaseConfig().closePreparedStatement(ps);
-        }catch (Exception ex){
+            dataBaseConfig.closeResultSet(rs);
+            dataBaseConfig.closePreparedStatement(ps);
+        }
+        catch (Exception ex){
             logger.error("Error fetching next available slot",ex);
-        }finally {
-            getDataBaseConfig().closeConnection(con);
+        }
+        finally {
+            dataBaseConfig.closeConnection(con);
         }
         return result;
     }
@@ -46,18 +45,21 @@ public class ParkingSpotDAO {
         //update the availability fo that parking slot
         Connection con = null;
         try {
-            con = getDataBaseConfig().getConnection();
+            con = dataBaseConfig.getConnection();
             PreparedStatement ps = con.prepareStatement(DBConstants.UPDATE_PARKING_SPOT);
             ps.setBoolean(1, parkingSpot.isAvailable());
             ps.setInt(2, parkingSpot.getId());
             int updateRowCount = ps.executeUpdate();
-            getDataBaseConfig().closePreparedStatement(ps);
+            
+            dataBaseConfig.closePreparedStatement(ps);
             return (updateRowCount == 1);
-        }catch (Exception ex){
+        }
+        catch (Exception ex){
             logger.error("Error updating parking info",ex);
             return false;
-        }finally {
-            getDataBaseConfig().closeConnection(con);
+        }
+        finally {
+            dataBaseConfig.closeConnection(con);
         }
     }
 }

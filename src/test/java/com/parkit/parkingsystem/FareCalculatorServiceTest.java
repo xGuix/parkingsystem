@@ -33,7 +33,7 @@ class FareCalculatorServiceTest {
     @Test
     void calculateFareCar(){
     	
-        ticket.setInTime(LocalDateTime.now().minusMinutes(60));
+        ticket.setInTime(LocalDateTime.now().minusMinutes(59));
         ticket.setOutTime(LocalDateTime.now());
     	ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR,false);
 
@@ -45,12 +45,13 @@ class FareCalculatorServiceTest {
     @Test
     void calculateFareBike(){
     	
-        ticket.setInTime(LocalDateTime.now().minusMinutes(60));
+        ticket.setInTime(LocalDateTime.now().minusMinutes(59));
         ticket.setOutTime(LocalDateTime.now());
         ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE,false);
 
         ticket.setParkingSpot(parkingSpot);
         fareCalculatorService.calculateFare(ticket);
+        
         assertEquals(Fare.BIKE_RATE_PER_HOUR,ticket.getPrice());
     }
 
@@ -62,6 +63,7 @@ class FareCalculatorServiceTest {
         ParkingSpot parkingSpot = new ParkingSpot(1, null,false);
 
         ticket.setParkingSpot(parkingSpot);
+        
         assertThrows(NullPointerException.class, () -> fareCalculatorService.calculateFare(ticket));
     }
     
@@ -73,6 +75,7 @@ class FareCalculatorServiceTest {
         ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE,false);
         
         ticket.setParkingSpot(parkingSpot);
+        
         assertThrows(IllegalArgumentException.class, () -> fareCalculatorService.calculateFare(ticket));
     }
 
@@ -85,6 +88,7 @@ class FareCalculatorServiceTest {
 
         ticket.setParkingSpot(parkingSpot);
         fareCalculatorService.calculateFare(ticket);
+        
         assertEquals(0, ticket.getPrice());
     }
 
@@ -97,19 +101,27 @@ class FareCalculatorServiceTest {
 
         ticket.setParkingSpot(parkingSpot);
         fareCalculatorService.calculateFare(ticket);
+        
         assertEquals(0, ticket.getPrice());
     }
 
     @Test
-    void calculateFareCarWithMoreThanADayParkingTime() throws InterruptedException{
+    void calculateFareCarWithMoreThanADayParkingTime() {
 
-        ticket.setInTime(LocalDateTime.now().minusHours(24));
+        ticket.setInTime(LocalDateTime.now().minusHours(23));
         ticket.setOutTime(LocalDateTime.now());
         ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR,false);
         
         ticket.setParkingSpot(parkingSpot);
         fareCalculatorService.calculateFare(ticket);
+        
         assertEquals(24*Fare.CAR_RATE_PER_HOUR, ticket.getPrice());
     }
-
+    
+    @Test
+    void CalculateFareCarAsRecurrentCustomer(){
+	    // ARRANGE
+	    // ACT
+	    // ASSERT
+    }
 }
