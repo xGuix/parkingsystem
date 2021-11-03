@@ -10,7 +10,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -71,15 +70,12 @@ class ParkingDataBaseIT {
     private static void tearDown(){
 
     }
-	
 	@Disabled
-    @Tag("NextAvailableSlopChecker")
-	@DisplayName("NextAvailableSlotDAO") //Check parking availability in database via parkingNumber and parkingType
+	@DisplayName("NextAvailableSlotCheck") //Check parking availability in database via parkingNumber and parkingType
 	@Test
 	void testIfNextSlotIsAvailable() {
 
 		// ARRANGE
-    	//ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
     	// ACT
     	parkingSpot = new ParkingSpot(1,null,false);
     	parkingSpot.setId(parkingSpot.getId());
@@ -98,10 +94,10 @@ class ParkingDataBaseIT {
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
         parkingService.processIncomingVehicle();
         // ASSERT
-    	//assertEquals(parkingSpot.getId(), equals(false));
-		//assertEquals(parkingSpot.getParkingType(), equals(parkingSpotDAO));
+    	// assertEquals(parkingSpot.getId(), equals(false));
+		// assertEquals(parkingSpot.getParkingType(), equals(parkingSpotDAO));
 
-        //TODO: check that a ticket is actualy saved in DB and Parking table is updated with availability       
+        // TODO: check that a ticket is actualy saved in DB and Parking table is updated with availability       
     }
 
     @Test	

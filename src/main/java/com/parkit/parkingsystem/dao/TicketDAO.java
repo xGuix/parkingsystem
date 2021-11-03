@@ -3,7 +3,6 @@ package com.parkit.parkingsystem.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
@@ -21,6 +20,8 @@ public class TicketDAO {
     private static final Logger logger = LogManager.getLogger("TicketDAO");
     
     public DataBaseConfig dataBaseConfig = new DataBaseConfig();
+
+	private String vehicleRegNumber;
 
     @SuppressWarnings("finally")
 	public boolean saveTicket(Ticket ticket){
@@ -81,15 +82,22 @@ public class TicketDAO {
     
     //TODO : Methode public boolean renvoi True si le VehicleRegNumber à un ticket en BDD
     // via BDConstants.CHECK_IF_VEHICLE_ALREADY_COME
-    public boolean getIfRecurrentUser() throws Exception, SQLException {
-    	try(Connection con = dataBaseConfig.getConnection()){
-        PreparedStatement ps = con.prepareStatement(DBConstants.CHECK_IF_VEHICLE_ALREADY_COME);
-        ResultSet rs = ps.executeQuery();
+    public boolean getIfRecurrentUser() {
+    	
+    	Connection con = null;
+        Ticket ticket = null;
+           	try {
+    		con = dataBaseConfig.getConnection();
+    		PreparedStatement ps = con.prepareStatement(DBConstants.CHECK_IF_VEHICLE_ALREADY_COME);
+    		ps.setString (1, vehicleRegNumber);
+    		ResultSet rs = ps.executeQuery();
         	if(rs.next()) {
-        		
+        		ticket = new Ticket();
+                ParkingSpot parkingSpot = new ParkingSpot(rs.getInt(1), ParkingType.valueOf(rs.getString(6)),false);
+        		ticket.getVehicleRegNumber();        		
         	}
     	}
-		return true;
+		return Boolean();
     }
 
     
