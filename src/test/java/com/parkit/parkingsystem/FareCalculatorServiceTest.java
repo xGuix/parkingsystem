@@ -2,7 +2,6 @@ package com.parkit.parkingsystem;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 
@@ -136,13 +135,10 @@ class FareCalculatorServiceTest {
     	ticket.setParkingSpot(parkingSpot);
 	    // ACT
     	TicketDAO ticketDAO = new TicketDAO();
-
+    	ticketDAO.getIfRecurrentUser(true);
+    	ticketDAO.getTicket("ABCDEF");
     	fareCalculatorService.calculateFare(ticket);
-    	try {
-			when(ticketDAO.getIfRecurrentUser()).thenReturn(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+    	ticket.setPrice(Fare.CAR_RATE_PER_HOUR * fareCalculatorService.calculateFareForReccurentUser());
 	    // ASSERT
 		assertEquals(0.95*Fare.CAR_RATE_PER_HOUR,ticket.getPrice());
     }
@@ -155,14 +151,8 @@ class FareCalculatorServiceTest {
     	ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE,false);
     	ticket.setParkingSpot(parkingSpot);
 	    // ACT
-    	TicketDAO ticketDAO = new TicketDAO();
-
     	fareCalculatorService.calculateFare(ticket);
-    	try {
-			when(ticketDAO.getIfRecurrentUser()).thenReturn(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+    	ticket.setPrice(Fare.BIKE_RATE_PER_HOUR * fareCalculatorService.calculateFareForReccurentUser());
 	    // ASSERT
 		assertEquals(0.95*Fare.BIKE_RATE_PER_HOUR,ticket.getPrice());
     }

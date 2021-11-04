@@ -35,7 +35,7 @@ public class FareCalculatorService {
 	                }
 	                else {
 	                	
-						ticket.setPrice((timeInHours * (Fare.CAR_RATE_PER_HOUR * calculateFareForReccurentUser()) + 1.5));
+						ticket.setPrice((timeInHours * (Fare.CAR_RATE_PER_HOUR * calculateFareForReccurentUser())));
 	               }
 	                break;
 	            }
@@ -45,7 +45,7 @@ public class FareCalculatorService {
 				    	ticket.setPrice(Fare.BIKE_RATE_PER_HOUR * calculateFareForReccurentUser());
 				    }
 					else {
-						ticket.setPrice((timeInHours * (Fare.BIKE_RATE_PER_HOUR * calculateFareForReccurentUser()) + 1));
+						ticket.setPrice((timeInHours * (Fare.BIKE_RATE_PER_HOUR * calculateFareForReccurentUser())));
 					}
 	                break;
 	            }
@@ -61,11 +61,12 @@ public class FareCalculatorService {
 	    return Duration.between(inHour,outHour);
     }
     
-    //Cacul de l'utilisateur reccurent doit repondre si oui ou non 
+    //Cacul de l'utilisateur reccurent renvoi 1 ou 0.95
     public Double calculateFareForReccurentUser() {
-    	Double result = null ;
+    	Ticket ticket = new Ticket();
+    	Double result = (double) 0;
     	try {
-			if(ticketDAO.getIfRecurrentUser()) {
+			if(ticketDAO.getIfRecurrentUser(ticket.getVehicleRegNumber())) {
 				result = 0.95;
 			}
 			else {
