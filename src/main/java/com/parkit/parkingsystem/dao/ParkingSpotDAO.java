@@ -50,7 +50,6 @@ public class ParkingSpotDAO {
             ps.setBoolean(1, parkingSpot.isAvailable());
             ps.setInt(2, parkingSpot.getId());
             int updateRowCount = ps.executeUpdate();
-            
             dataBaseConfig.closePreparedStatement(ps);
             return (updateRowCount == 1);
         }
