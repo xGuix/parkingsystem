@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -28,8 +27,6 @@ class ParkingServiceTest {
 
     private static ParkingService parkingService;
 
-    @InjectMocks
-    private Ticket ticket;
     @Mock
     private static InputReaderUtil inputReaderUtil;
     @Mock
@@ -44,7 +41,7 @@ class ParkingServiceTest {
 
             ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR,false);
             Ticket ticket = new Ticket();
-            ticket.setInTime(LocalDateTime.now());
+            ticket.setInTime(LocalDateTime.now().minusMinutes(45));
             ticket.setParkingSpot(parkingSpot);
             ticket.setVehicleRegNumber("ABCDEF");
             when(ticketDAO.getTicket(anyString())).thenReturn(ticket);

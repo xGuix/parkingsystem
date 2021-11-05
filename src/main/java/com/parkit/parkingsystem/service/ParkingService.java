@@ -31,10 +31,6 @@ public class ParkingService {
         this.ticketDAO = ticketDAO;
     }
     
-    void setFareCalculatorService(FareCalculatorService fareCalculatorService) {
-    	this.fareCalculatorService = fareCalculatorService;
-    }
-
     public void processIncomingVehicle() {
         try{
             ParkingSpot parkingSpot = getNextParkingNumberIfAvailable();
@@ -52,10 +48,11 @@ public class ParkingService {
                 ticket.setPrice(0);
                 ticket.setInTime(inTime);
                 ticket.setOutTime(null);
+                //ticketDAO.getIfRecurrentUser(vehicleRegNumber);
                 ticketDAO.saveTicket(ticket);
-                System.out.println("Generated Ticket and saved in DB");
-                System.out.println("Please park your vehicle in spot number: "+parkingSpot.getId());
-                System.out.println("Recorded in-time for vehicle number: "+vehicleRegNumber+" - The: "+inTime.toLocalDate()+" at "+inTime.toLocalTime());
+                logger.warn("Generated Ticket and saved in DB");
+                logger.info("Please park your vehicle in spot number: {}",parkingSpot.getId());
+                logger.info("Recorded in-time for vehicle number: {} / In-time The: {} at {}",vehicleRegNumber,inTime.toLocalDate(),inTime.toLocalTime());
             }
         }
         catch(Exception e){
@@ -65,7 +62,7 @@ public class ParkingService {
     }
 
     private String getVehicleRegNumber() {
-        System.out.println("Please type the vehicle registration number and press enter key");
+    	logger.info("Please type the vehicle registration number and press enter key");
         return inputReaderUtil.readVehicleRegistrationNumber();
     }
 
@@ -92,9 +89,9 @@ public class ParkingService {
     }
 
     private ParkingType getVehichleType(){
-        System.out.println("Please select vehicle type from menu");
-        System.out.println("1 CAR");
-        System.out.println("2 BIKE");
+        logger.info("Please select vehicle type from menu");
+        logger.info("1 CAR");
+        logger.info("2 BIKE");
         int input = inputReaderUtil.readSelection();
         switch(input){
             case 1: {
@@ -104,7 +101,7 @@ public class ParkingService {
                 return ParkingType.BIKE;
             }
             default: {
-                System.out.println("Incorrect input provided");
+            	logger.info("Incorrect input provided");
                 throw new IllegalArgumentException("Entered input is invalid");
             }
         }
@@ -114,8 +111,7 @@ public class ParkingService {
         try{
             String vehicleRegNumber = getVehicleRegNumber();
             Ticket ticket = ticketDAO.getTicket(vehicleRegNumber);
-            
-            Thread.sleep(1000);
+            Thread.sleep(600);
             LocalDateTime outTime = LocalDateTime.now();
             ticket.setOutTime(outTime);
 
@@ -125,12 +121,14 @@ public class ParkingService {
                 ParkingSpot parkingSpot = ticket.getParkingSpot();
                 parkingSpot.setAvailable(true);
                 parkingSpotDAO.updateParking(parkingSpot);
-                
-                System.out.println("Please pay the parking fare: " + ticket.getPrice() + "€");
-                System.out.println("Recorded out-time for vehicle number:" + ticket.getVehicleRegNumber() +" - The: "+outTime.toLocalDate()+" at "+outTime.toLocalTime());
+                if (ticketDAO.getIfRecurrentUser(vehicleRegNumber)) {
+                    logger.info("Welcome back!" + "As usual user, you get benefit of 5% discount!");
+                }
+                logger.info("Please pay the parking fare: {}€", ticket.getPrice());
+                logger.info("Recorded out-time for vehicle number: {} / Out-time The: {} at {}", ticket.getVehicleRegNumber(), outTime.toLocalDate(), outTime.toLocalTime());
             }
             else{
-                System.out.println("Unable to update ticket information. Error occurred");
+               logger.info("Unable to update ticket information. Error occurred");
             }
         }
         catch(Exception e){

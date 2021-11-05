@@ -15,13 +15,10 @@ import com.parkit.parkingsystem.model.Ticket;
 
 public class TicketDAO {
 
-    private static final Logger logger = LogManager.getLogger("TicketDAO");
+    private static final Logger logger = LogManager.getLogger(TicketDAO.class);
     
     public DataBaseConfig dataBaseConfig = new DataBaseConfig();
 
-	private Ticket ticket;
-
-    @SuppressWarnings("finally")
 	public boolean saveTicket(Ticket ticket){
     	
         Connection con = null;
@@ -41,11 +38,10 @@ public class TicketDAO {
         }
 		finally {
 			dataBaseConfig.closeConnection(con);
-			return false;
-        }
+		}
+        return false;	
     }
-
-    @SuppressWarnings("finally")
+    
 	public Ticket getTicket(String vehicleRegNumber) {
     	
         Connection con = null;
@@ -72,24 +68,27 @@ public class TicketDAO {
         }
         finally {
             dataBaseConfig.closeConnection(con);
-            return ticket;
         }
+        return ticket;
     }
     
-    //TODO : Methode public boolean renvoi True si le VehicleRegNumber à un ticket en BDD
+    
+    // Methode public boolean renvoi True si le VehicleRegNumber à un ticket en BDD
     // via BDConstants.CHECK_IF_VEHICLE_ALREADY_COME
 	public boolean getIfRecurrentUser(String vehicleRegNumber) {
     	
     	Connection con = null;
-        ticket = null;
+        Boolean recurrentUser= null;
         try {
             con = dataBaseConfig.getConnection();
             PreparedStatement ps = con.prepareStatement(DBConstants.CHECK_IF_VEHICLE_ALREADY_COME);
-            //ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
             ps.setString(1,vehicleRegNumber);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
-               ticket.setVehicleRegNumber(vehicleRegNumber);
+            	recurrentUser=true;
+            }
+            else {
+            	recurrentUser=false;
             }
             dataBaseConfig.closeResultSet(rs);
             dataBaseConfig.closePreparedStatement(ps);
@@ -100,7 +99,7 @@ public class TicketDAO {
         finally {
             dataBaseConfig.closeConnection(con);
         }
-		return true;
+		return recurrentUser;
     }
 
     
@@ -124,9 +123,4 @@ public class TicketDAO {
         }
         return false;
     }
-
-	public void getIfRecurrentUser(boolean b) {
-		// TODO Auto-generated method stub
-		
-	}
 }
