@@ -3,7 +3,6 @@ package com.parkit.parkingsystem.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
@@ -18,11 +17,10 @@ import com.parkit.parkingsystem.model.Ticket;
 
 public class TicketDAO {
 
-    private static final Logger logger = LogManager.getLogger("TicketDAO");
+    private static final Logger logger = LogManager.getLogger(TicketDAO.class);
     
     public DataBaseConfig dataBaseConfig = new DataBaseConfig();
 
-    @SuppressWarnings("finally")
 	public boolean saveTicket(Ticket ticket){
     	
         Connection con = null;
@@ -42,11 +40,10 @@ public class TicketDAO {
         }
 		finally {
 			dataBaseConfig.closeConnection(con);
-			return false;
-        }
+		}
+        return false;	
     }
-
-    @SuppressWarnings("finally")
+    
 	public Ticket getTicket(String vehicleRegNumber) {
     	
         Connection con = null;
@@ -75,21 +72,35 @@ public class TicketDAO {
         }
         finally {
             dataBaseConfig.closeConnection(con);
-            return ticket;
         }
+        return ticket;
     }
     
-    //TODO : Methode public boolean renvoi True si le VehicleRegNumber à un ticket en BDD
+    
+    // Methode public boolean renvoi True si le VehicleRegNumber à un ticket en BDD
     // via BDConstants.CHECK_IF_VEHICLE_ALREADY_COME
-    public boolean getIfRecurrentUser() throws Exception, SQLException {
-    	try(Connection con = dataBaseConfig.getConnection()){
-        PreparedStatement ps = con.prepareStatement(DBConstants.CHECK_IF_VEHICLE_ALREADY_COME);
-        ResultSet rs = ps.executeQuery();
-        	if(rs.next()) {
-        		
-        	}
-    	}
-		return true;
+	public boolean getIfRecurrentUser(String vehicleRegNumber) {
+    	
+    	Connection con = null;
+        Boolean recurrentUser= false;
+        try {
+            con = dataBaseConfig.getConnection();
+            PreparedStatement ps = con.prepareStatement(DBConstants.CHECK_IF_VEHICLE_ALREADY_COME);
+            ps.setString(1,vehicleRegNumber);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+            	recurrentUser=true;
+            }
+            dataBaseConfig.closeResultSet(rs);
+            dataBaseConfig.closePreparedStatement(ps);
+        }
+        catch (Exception ex){
+            logger.error("Error fetching to get Ticket",ex);
+        }
+        finally {
+            dataBaseConfig.closeConnection(con);
+        }
+		return recurrentUser;
     }
 
     
@@ -110,6 +121,7 @@ public class TicketDAO {
         }
         finally {
             dataBaseConfig.closeConnection(con);
+            
         }
         return false;
     }
