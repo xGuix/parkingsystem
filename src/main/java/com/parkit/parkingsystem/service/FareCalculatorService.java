@@ -24,8 +24,8 @@ public class FareCalculatorService {
         Duration parkTime = getParkDurationInHour(ticket);
         double timeInMinutes = parkTime.toMinutes();
         double timeInHours = parkTime.toHours();
-        
-        if (parkTime.toMinutes()<30) {
+
+		if (parkTime.toMinutes()<30) {
         	ticket.setPrice(0);
         }
         else{
@@ -37,8 +37,7 @@ public class FareCalculatorService {
 	                	ticket.setPrice(Fare.CAR_RATE_PER_HOUR * calculateFareForReccurentUser());
 	                }
 	                else {
-	                	
-						ticket.setPrice((timeInHours * (Fare.CAR_RATE_PER_HOUR * calculateFareForReccurentUser())));
+	                	ticket.setPrice(timeInHours * (Fare.CAR_RATE_PER_HOUR * calculateFareForReccurentUser())+1.5);
 	               }
 	                break;
 	            }
@@ -48,7 +47,7 @@ public class FareCalculatorService {
 				    	ticket.setPrice(Fare.BIKE_RATE_PER_HOUR * calculateFareForReccurentUser());
 				    }
 					else {
-						ticket.setPrice((timeInHours * (Fare.BIKE_RATE_PER_HOUR * calculateFareForReccurentUser())));
+						ticket.setPrice(timeInHours * (Fare.BIKE_RATE_PER_HOUR * calculateFareForReccurentUser())+1.0);
 					}
 	                break;
 	            }
@@ -67,9 +66,10 @@ public class FareCalculatorService {
     //Cacul de l'utilisateur reccurent renvoi 1 ou 0.95
     public Double calculateFareForReccurentUser() {
     	Ticket ticket = new Ticket();
+    	String vehicleRegNumber = ticket.getVehicleRegNumber();
     	Double result = (double) 0;
     	try {
-			if(ticketDAO.getIfRecurrentUser(ticket.getVehicleRegNumber())) {
+			if(ticketDAO.getIfRecurrentUser(vehicleRegNumber)) {
 				result = 0.95;
 			}
 			else {

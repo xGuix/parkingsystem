@@ -32,10 +32,6 @@ class ParkingDataBaseIT {
     
     @Mock
     private static InputReaderUtil inputReaderUtil;
-    /* @Mock
-    private ParkingSpot parkingSpot;
-    @Mock
-    private static Ticket ticket; */
     
     @BeforeAll
     private static void setUp() throws Exception{
