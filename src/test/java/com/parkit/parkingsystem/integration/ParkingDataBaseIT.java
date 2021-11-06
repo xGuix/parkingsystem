@@ -22,10 +22,11 @@ import com.parkit.parkingsystem.util.InputReaderUtil;
 @ExtendWith(MockitoExtension.class)
 class ParkingDataBaseIT {
 
-    private static DataBaseTestConfig dataBaseTestConfig = new DataBaseTestConfig();
+    private static DataBaseTestConfig dataBaseTestConfig;
+    private static DataBasePrepareService dataBasePrepareService;
     private static ParkingSpotDAO parkingSpotDAO;
     private static TicketDAO ticketDAO;
-    private static DataBasePrepareService dataBasePrepareService;
+    private static ParkingService parkingService;
     
     LocalDateTime inTime= LocalDateTime.now();;
     LocalDateTime outTime = LocalDateTime.now().plusHours(3);
@@ -35,25 +36,22 @@ class ParkingDataBaseIT {
     
     @BeforeAll
     private static void setUp() throws Exception{
+        dataBaseTestConfig = new DataBaseTestConfig();
+        dataBasePrepareService = new DataBasePrepareService();
         parkingSpotDAO = new ParkingSpotDAO();
         parkingSpotDAO.dataBaseConfig = dataBaseTestConfig;
         ticketDAO = new TicketDAO();
         ticketDAO.dataBaseConfig = dataBaseTestConfig;
-        dataBasePrepareService = new DataBasePrepareService();
+        
+
+        
     }
 
     @BeforeEach
     private void setUpPerTest() throws Exception {
-    	   	        
+    	dataBasePrepareService.clearDataBaseEntries();
         when(inputReaderUtil.readSelection()).thenReturn(1);
         when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
-        		
-		//Ticket ticket = new Ticket();
-		//ticket.setInTime(inTime);
-		//ticket.setOutTime(outTime);
-		
-		dataBasePrepareService.clearDataBaseEntries();
-		
     }
 
 	@AfterAll
@@ -61,8 +59,7 @@ class ParkingDataBaseIT {
 
     }
 	/*
-	@Disabled
-	@DisplayName("NextAvailableSlotCheck") //Check parking availability in database via parkingNumber and parkingType
+	Check parking availability in database via parkingNumber and parkingType
 	@Test
 	void testIfNextSlotIsAvailable() {
 		// ARRANGE
@@ -77,23 +74,33 @@ class ParkingDataBaseIT {
 
 	@Test
     void testParkingACar() throws Exception{
+		
     	// ARRANGE
-        // ACT
-        ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
-        parkingService.processIncomingVehicle();
-        // ASSERT
-    	// assertEquals(parkingSpot.getId(), equals(false));
-		// assertEquals(parkingSpot.getParkingType(), equals(parkingSpotDAO));
 
-        // TODO: check that a ticket is actualy saved in DB and Parking table is updated with availability       
+        // ACT
+		//parkingService.processIncomingVehicle();
+        // ASSERT
+
+		
+        // TODO: check that a ticket is actualy saved in DB and Parking table is updated with availability
+		 parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
+	     parkingService.processIncomingVehicle();
     }
 
     @Test	
     void testParkingLotExit() throws Exception{
     	
-        ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
-        parkingService.processIncomingVehicle();
-        parkingService.processExitingVehicle();
-        //TODO: check that the fare generated and out time are populated correctly in the database
+    	// ARRANGE
+		
+        // ACT
+		
+        // ASSERT
+
+    	
+        // TODO: check that the fare generated and out time are populated correctly in the database
+         parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
+         parkingService.processIncomingVehicle();
+         parkingService.processExitingVehicle();
+    	
     }
 }
