@@ -81,8 +81,8 @@ public class TicketDAO {
     // via BDConstants.CHECK_IF_VEHICLE_ALREADY_COME
 	public boolean getIfRecurrentUser(String vehicleRegNumber) {
     	
+		Boolean recurrentUser= false;
     	Connection con = null;
-        Boolean recurrentUser= false;
         try {
             con = dataBaseConfig.getConnection();
             PreparedStatement ps = con.prepareStatement(DBConstants.CHECK_IF_VEHICLE_ALREADY_COME);

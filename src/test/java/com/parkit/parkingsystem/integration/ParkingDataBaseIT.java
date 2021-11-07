@@ -1,6 +1,7 @@
 package com.parkit.parkingsystem.integration;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.AfterAll;
@@ -27,7 +28,6 @@ class ParkingDataBaseIT {
     private static ParkingSpotDAO parkingSpotDAO;
     private static ParkingService parkingService;
     private static TicketDAO ticketDAO;
-    private static Ticket ticket;
         
     @Mock
     private static InputReaderUtil inputReaderUtil;
@@ -55,22 +55,23 @@ class ParkingDataBaseIT {
     }
 	
 	@Test
-    void testParkingACar() throws Exception{
+    void testParkingAIncomingCar() throws Exception{
     	// GIVEN
 		parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
-		//ticket.setParkingSpot(new ParkingSpot(1, ParkingType.CAR, false));
-		//ticket.setVehicleRegNumber("ABCEDF");
-		//ticket.setInTime(LocalDateTime.now().minusMinutes(45));
-		//ticket.setOutTime(LocalDateTime.now());
-		//ticket.setPrice(1.5);
+		parkingService.processIncomingVehicle();
+		
+		parkingService.processExitingVehicle();
+
         // WHEN
 		int nextAvailableSlot = parkingService.getNextParkingNumberIfAvailable().getId();
-		parkingService.processIncomingVehicle();
-		ticket = ticketDAO.getTicket("ABCDEF");
+		Ticket savedTicket = ticketDAO.getTicket("ABCDEF");
+		boolean ifReccurentUser = ticketDAO.getIfRecurrentUser("ABCDEF");
 		// THEN
-        assertEquals(true, ticket != null);
-        assertEquals(nextAvailableSlot + 1, parkingService.getNextParkingNumberIfAvailable().getId());
-        assertEquals(ticket.getVehicleRegNumber(), ticketDAO.getTicket(ticket.getVehicleRegNumber()).getVehicleRegNumber());
+		assertThat(nextAvailableSlot).isEqualTo(1);
+        assertEquals(nextAvailableSlot, parkingService.getNextParkingNumberIfAvailable().getId());
+        assertThat(savedTicket).isNotIn();
+		assertThat(ifReccurentUser).isTrue();
+
 	
         // TODO: check that a ticket is actualy saved in DB and Parking table is updated with availability
 
