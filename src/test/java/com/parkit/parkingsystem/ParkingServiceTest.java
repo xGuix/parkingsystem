@@ -46,7 +46,7 @@ class ParkingServiceTest {
             ticket.setVehicleRegNumber("ABCDEF");
             when(ticketDAO.getTicket(anyString())).thenReturn(ticket);
             when(ticketDAO.updateTicket(any(Ticket.class))).thenReturn(true);
-            
+
             when(parkingSpotDAO.updateParking(any(ParkingSpot.class))).thenReturn(true);
 
             parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
@@ -56,11 +56,22 @@ class ParkingServiceTest {
         }
     }
     
+	/** Check parking availability in database via parkingNumber and parkingType
+	@Test
+	void testIfNextSlotIsAvailable() {
+		// GIVEN
+		ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
+    	// WHEN
+    	when(inputReaderUtil.readSelection()).thenReturn(1);
+        when(parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR)).thenReturn(1);
+        when(parkingService.getNextParkingNumberIfAvailable()).thenReturn(true);
+    	// THEN
+    	assertEquals(true, parkingService.getNextParkingNumberIfAvailable());
+	} */
+        
     @Test
     void processExitingVehicleTest() throws InterruptedException {
 		parkingService.processExitingVehicle();
         verify(parkingSpotDAO, Mockito.times(1)).updateParking(any(ParkingSpot.class));
     }
-    
-    
 }

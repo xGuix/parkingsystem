@@ -53,7 +53,7 @@ public class ParkingService {
                 System.out.println("Please park your vehicle in spot number: "+ parkingSpot.getId());
                 System.out.println("Recorded in-time for vehicle number: "+vehicleRegNumber+" / In-time The: "+inTime.toLocalDate()+" at "+inTime.toLocalTime());
                 System.out.println("--------------------------------------------------------------------------------------------");
-                if (ticketDAO.getIfRecurrentUser(ticket.getVehicleRegNumber())) {
+                if (ticketDAO.getIfRecurrentUser(vehicleRegNumber)) {
                 	System.out.println("Welcome back! As usual user, you get benefit of 5% discount!");
                 	System.out.println("--------------------------------------------------------------------------------------------");
                 }
