@@ -45,8 +45,6 @@ class ParkingServiceTest {
             ticket.setInTime(LocalDateTime.now().minusMinutes(45));
             ticket.setParkingSpot(parkingSpot);
             ticket.setVehicleRegNumber("ABCDEF");
-            when(ticketDAO.getTicket(anyString())).thenReturn(ticket);
-            when(ticketDAO.updateTicket(any(Ticket.class))).thenReturn(true);
 
             when(parkingSpotDAO.updateParking(any(ParkingSpot.class))).thenReturn(true);
 
@@ -61,22 +59,26 @@ class ParkingServiceTest {
 	@Test
 	void testIfIncomingVehicleIsRecurrentUser() {
 		// GIVEN
-		//when(ticketDAO.getIfRecurrentUser(anyString())).thenReturn(true);
-		//when(inputReaderUtil.readSelection()).thenReturn(1);
+    	when(ticketDAO.getIfRecurrentUser(ticket.getVehicleRegNumber())).thenReturn(true);
+		when(inputReaderUtil.readSelection()).thenReturn(1);
 		when(parkingSpotDAO.getNextAvailableSlot(any(ParkingType.class))).thenReturn(1);
-		when(ticketDAO.getIfRecurrentUser(anyString())).thenReturn(true);
 		// WHEN
         parkingService.processIncomingVehicle();
     	// THEN
-		verify(ticketDAO, Mockito.times(1)).getIfRecurrentUser(null);
 		verify(parkingSpotDAO, Mockito.times(1)).getNextAvailableSlot(any(ParkingType.class));
+		verify(ticketDAO, Mockito.times(1)).getIfRecurrentUser(anyString());
 		verify(inputReaderUtil, Mockito.times(1)).readSelection();
+		
 	}
    
     @Test
     void processExitingVehicleTest() throws InterruptedException {
-    	
+    	// GIVEN
+    	when(ticketDAO.getTicket(anyString())).thenReturn(ticket);
+        when(ticketDAO.updateTicket(any(Ticket.class))).thenReturn(true);
+    	// WHEN
 		parkingService.processExitingVehicle();
+		// THEN
         verify(parkingSpotDAO, Mockito.times(1)).updateParking(any(ParkingSpot.class));
         verify(ticketDAO, Mockito.times(1)).getTicket(anyString());
         verify(ticketDAO, Mockito.times(1)).updateTicket(any(Ticket.class));
