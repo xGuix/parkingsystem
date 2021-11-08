@@ -26,6 +26,7 @@ import com.parkit.parkingsystem.util.InputReaderUtil;
 class ParkingServiceTest {
 
     private static ParkingService parkingService;
+    private static Ticket ticket;
 
     @Mock
     private static InputReaderUtil inputReaderUtil;
@@ -40,7 +41,7 @@ class ParkingServiceTest {
             when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
 
             ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR,false);
-            Ticket ticket = new Ticket();
+            ticket = new Ticket();
             ticket.setInTime(LocalDateTime.now().minusMinutes(45));
             ticket.setParkingSpot(parkingSpot);
             ticket.setVehicleRegNumber("ABCDEF");
@@ -55,23 +56,29 @@ class ParkingServiceTest {
             throw  new RuntimeException("Failed to set up test mock objects");
         }
     }
-    
-	/** Check parking availability in database via parkingNumber and parkingType
+  
+	//Check parking availability in database via parkingNumber and parkingType
 	@Test
-	void testIfNextSlotIsAvailable() {
+	void testIfIncomingVehicleIsRecurrentUser() {
 		// GIVEN
-		ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
-    	// WHEN
-    	when(inputReaderUtil.readSelection()).thenReturn(1);
-        when(parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR)).thenReturn(1);
-        when(parkingService.getNextParkingNumberIfAvailable()).thenReturn(true);
+		//when(ticketDAO.getIfRecurrentUser(anyString())).thenReturn(true);
+		//when(inputReaderUtil.readSelection()).thenReturn(1);
+		when(parkingSpotDAO.getNextAvailableSlot(any(ParkingType.class))).thenReturn(1);
+		when(ticketDAO.getIfRecurrentUser(anyString())).thenReturn(true);
+		// WHEN
+        parkingService.processIncomingVehicle();
     	// THEN
-    	assertEquals(true, parkingService.getNextParkingNumberIfAvailable());
-	} */
-        
+		verify(ticketDAO, Mockito.times(1)).getIfRecurrentUser(null);
+		verify(parkingSpotDAO, Mockito.times(1)).getNextAvailableSlot(any(ParkingType.class));
+		verify(inputReaderUtil, Mockito.times(1)).readSelection();
+	}
+   
     @Test
     void processExitingVehicleTest() throws InterruptedException {
+    	
 		parkingService.processExitingVehicle();
         verify(parkingSpotDAO, Mockito.times(1)).updateParking(any(ParkingSpot.class));
+        verify(ticketDAO, Mockito.times(1)).getTicket(anyString());
+        verify(ticketDAO, Mockito.times(1)).updateTicket(any(Ticket.class));
     }
 }

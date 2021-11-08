@@ -1,7 +1,6 @@
 package com.parkit.parkingsystem.integration;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.AfterAll;
@@ -44,9 +43,9 @@ class ParkingDataBaseIT {
 
     @BeforeEach
     private void setUpPerTest() throws Exception {
-    	dataBasePrepareService.clearDataBaseEntries();
         when(inputReaderUtil.readSelection()).thenReturn(1);
         when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
+    	dataBasePrepareService.clearDataBaseEntries();
     }
 
 	@AfterAll
@@ -58,22 +57,17 @@ class ParkingDataBaseIT {
     void testParkingAIncomingCar() throws Exception{
     	// GIVEN
 		parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
-		parkingService.processIncomingVehicle();
-		
-		parkingService.processExitingVehicle();
-
-        // WHEN
 		int nextAvailableSlot = parkingService.getNextParkingNumberIfAvailable().getId();
 		Ticket savedTicket = ticketDAO.getTicket("ABCDEF");
 		boolean ifReccurentUser = ticketDAO.getIfRecurrentUser("ABCDEF");
+        // WHEN
+		parkingService.processIncomingVehicle();
 		// THEN
-		assertThat(nextAvailableSlot).isEqualTo(1);
-        assertEquals(nextAvailableSlot, parkingService.getNextParkingNumberIfAvailable().getId());
-        assertThat(savedTicket).isNotIn();
+        assertThat(nextAvailableSlot).isEqualTo(1);
+        assertThat(savedTicket).isNull();
 		assertThat(ifReccurentUser).isTrue();
 
-	
-        // TODO: check that a ticket is actualy saved in DB and Parking table is updated with availability
+	    // TODO: check that a ticket is actualy saved in DB and Parking table is updated with availability
 
 }
 		
