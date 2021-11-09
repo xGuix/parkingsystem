@@ -9,5 +9,6 @@ public class DBConstants {
     public static final String UPDATE_TICKET = "update ticket set PRICE=?, OUT_TIME=? where ID=?";
     public static final String GET_TICKET = "select t.PARKING_NUMBER, t.ID, t.PRICE, t.IN_TIME, t.OUT_TIME, t.RECURRENT_USER, p.TYPE from ticket t,parking p where p.parking_number = t.parking_number and t.VEHICLE_REG_NUMBER=? and OUT_TIME is null order by t.IN_TIME limit 1";
     
-    public static final String CHECK_IF_VEHICLE_ALREADY_COME = "SELECT * from TICKET where VEHICLE_REG_NUMBER = ? and OUT_TIME IS NOT NULL and PRICE is not null limit 1";
+    public static final String CHECK_IF_VEHICLE_ALREADY_COME = "SELECT * from TICKET where VEHICLE_REG_NUMBER = ? and OUT_TIME IS NOT NULL limit 1";
+    public static final String CHECK_IF_VEHICLE_ALREADY_IN  = "SELECT * from TICKET where VEHICLE_REG_NUMBER = ? and OUT_TIME IS NULL limit 1";
 }

@@ -60,21 +60,18 @@ class ParkingDataBaseIT {
     }
 	
 	@Test
-    void testParkingAIncomingCar() throws Exception{
+    void testParkingACar() throws Exception{
     	// GIVEN
 		parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
-		int nextAvailableSlot = parkingService.getNextParkingNumberIfAvailable().getId();
-		boolean ifReccurentUser = ticketDAO.getIfRecurrentUser("ABCDEF");
-		//Ticket savedTicket = ticketDAO.getTicket("ABCDEF");
+		parkingService.getNextParkingNumberIfAvailable().getId();
+		Ticket savedTicket = ticketDAO.getTicket("ABCDEF");
         // WHEN
 		parkingService.processIncomingVehicle();
 		// THEN
-        assertThat(nextAvailableSlot).isEqualTo(1);
-		assertThat(ifReccurentUser).isFalse();
-        //assertThat(savedTicket).isEqualTo(ticketDAO.getTicket("ABCDEF"));
-
+        assertThat(parkingService.getNextParkingNumberIfAvailable().getId()).isEqualTo(2);
+        assertThat(savedTicket).isEqualTo(ticketDAO.getTicket(ticket.getVehicleRegNumber()));
+		assertThat(ticketDAO.getIfRecurrentUser(ticket.getVehicleRegNumber())).isFalse();
 	    // TODO: check that a ticket is actualy saved in DB and Parking table is updated with availability
-
 }
 		
     @Test	
@@ -83,14 +80,13 @@ class ParkingDataBaseIT {
     	// GIVEN
     	parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
     	parkingService.processIncomingVehicle();
-    	ticket.setOutTime(LocalDateTime.now().plusMinutes(45));
+    	ticket.setOutTime(LocalDateTime.now().plusMinutes(60));
         // WHEN
     	parkingService.processExitingVehicle();
     	ticketDAO.getTicket("ABCDEF");
         // THEN
         assertEquals(true, ticket.getPrice() >= 0);
         assertNotNull(ticket.getOutTime());
-        
         // TODO: check that the fare generated and out time are populated correctly in the database
     }
 }

@@ -40,6 +40,33 @@ public class ParkingSpotDAO {
         }
         return result;
     }
+    
+    // Methode public boolean renvoi True si Un VehicleRegNumber est déja présent dans le parking
+    // via BDConstants.
+	public boolean checkIfUserAlreadyIn(String vehicleRegNumber) {
+    	
+		Boolean inParkUser= false;
+    	Connection con = null;
+        try {
+            con = dataBaseConfig.getConnection();
+            PreparedStatement ps = con.prepareStatement(DBConstants.CHECK_IF_VEHICLE_ALREADY_IN);
+            ps.setString(1,vehicleRegNumber);
+            ResultSet rs = ps.executeQuery();
+			if(rs.next()){
+            	inParkUser=true;
+            }
+			dataBaseConfig.closeResultSet(rs);
+            dataBaseConfig.closePreparedStatement(ps);
+        }
+        catch (Exception ex){
+            logger.error("Error fetching to ParkingSpot, Vehicle Already InPark",ex);
+        }
+        finally {
+            dataBaseConfig.closeConnection(con);
+            
+        }
+		return inParkUser;
+    }
 
     public boolean updateParking(ParkingSpot parkingSpot){
         //update the availability for that parking slot

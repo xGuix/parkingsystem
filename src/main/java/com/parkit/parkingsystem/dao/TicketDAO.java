@@ -89,10 +89,10 @@ public class TicketDAO {
             PreparedStatement ps = con.prepareStatement(DBConstants.CHECK_IF_VEHICLE_ALREADY_COME);
             ps.setString(1,vehicleRegNumber);
             ResultSet rs = ps.executeQuery();
-            if(rs.next()){
+			if(rs.isFirst()){
             	recurrentUser=true;
             }
-            dataBaseConfig.closeResultSet(rs);
+			dataBaseConfig.closeResultSet(rs);
             dataBaseConfig.closePreparedStatement(ps);
         }
         catch (Exception ex){
@@ -100,6 +100,7 @@ public class TicketDAO {
         }
         finally {
             dataBaseConfig.closeConnection(con);
+            
         }
 		return recurrentUser;
     }
