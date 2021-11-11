@@ -35,28 +35,30 @@ public class ParkingService {
     public void processIncomingVehicle() {
         try{
             ParkingSpot parkingSpot = getNextParkingNumberIfAvailable();
-            
-            if(parkingSpot !=null && parkingSpot.getId() > 0 ){
-                String vehicleRegNumber = getVehicleRegNumber();
-                parkingSpot.setAvailable(false);
+            String vehicleRegNumber = getVehicleRegNumber();
+            if(parkingSpot !=null && parkingSpot.getId() > 0 && !parkingSpotDAO.checkIfUserAlreadyIn(vehicleRegNumber)){
+                parkingSpot.setAvailable(false); 
                 parkingSpotDAO.updateParking(parkingSpot);//allot this parking space and mark it's availability as false
                 LocalDateTime inTime = LocalDateTime.now();
                 Ticket ticket = new Ticket();
+                // ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
                 ticket.setParkingSpot(parkingSpot);
                 ticket.setVehicleRegNumber(vehicleRegNumber);
                 ticket.setPrice(0);
                 ticket.setInTime(inTime);
                 ticket.setOutTime(null);
+                ticket.setRecurrentUser(ticketDAO.getIfRecurrentUser(vehicleRegNumber));
                 ticketDAO.saveTicket(ticket);
                 System.out.println("============================================================================================");
-                System.out.println("Generated Ticket and saved in DB");
+                System.out.println("Generated Ticket and saved in DataBase");
                 System.out.println("Please park your vehicle in spot number: "+ parkingSpot.getId());
-                System.out.println("Recorded in-time for vehicle number: "+vehicleRegNumber+" / In-time The: "+inTime.toLocalDate()+" at "+inTime.toLocalTime());
+                System.out.println("Recorded in-time for vehicle number: "+ticket.getVehicleRegNumber()+" / In-time The: "+inTime.toLocalDate()+" at "+inTime.toLocalTime());
                 System.out.println("--------------------------------------------------------------------------------------------");
-                if (ticketDAO.getIfRecurrentUser(ticket.getVehicleRegNumber())) {
-                	System.out.println("Welcome back! As usual user, you get benefit of 5% discount!");
-                	System.out.println("--------------------------------------------------------------------------------------------");
-                }
+            }
+            else {
+            	System.out.println("--------------------------------------------------------------------------------------------");
+            	System.out.println("Error, Incoming Vehicule. Please set an other Registration Number.");
+            	System.out.println("This vehicule seems already park in. Thanks");
             }
         }
         catch(Exception e){
@@ -66,7 +68,6 @@ public class ParkingService {
     }
 
     private String getVehicleRegNumber() {
-    	System.out.println("--------------------------------------------------------------------------------------------");
     	System.out.println("Please type the vehicle registration number and press enter key");
         return inputReaderUtil.readVehicleRegistrationNumber();
     }
@@ -75,7 +76,7 @@ public class ParkingService {
         int parkingNumber=0;
         ParkingSpot parkingSpot = null;
         try{
-            ParkingType parkingType = getVehichleType();
+            ParkingType parkingType = getVehicleType();
             parkingNumber = parkingSpotDAO.getNextAvailableSlot(parkingType);
             if(parkingNumber > 0){
                 parkingSpot = new ParkingSpot(parkingNumber,parkingType, true);
@@ -93,8 +94,7 @@ public class ParkingService {
         return parkingSpot;
     }
 
-    private ParkingType getVehichleType(){
-    	System.out.println("--------------------------------------------------------------------------------------------");
+    private ParkingType getVehicleType(){
     	System.out.println("Please select vehicle type from menu");
     	System.out.println("1 CAR");
     	System.out.println("2 BIKE");
@@ -128,7 +128,10 @@ public class ParkingService {
             	ParkingSpot parkingSpot = ticket.getParkingSpot();
                 parkingSpot.setAvailable(true);
                 parkingSpotDAO.updateParking(parkingSpot);
-                
+                if (ticket.getRecurrentUser()) {
+                    System.out.println("============================================================================================");
+                	System.out.println("Welcome back! As usual user, you get benefit of 5% discount!");
+                }
                 System.out.println("--------------------------------------------------------------------------------------------");
                 System.out.println("Please pay the parking fare: "+ticket.getPrice()+"€");
                 System.out.println("Recorded out-time for vehicle number: "+ticket.getVehicleRegNumber()+" / Out-time The: "+outTime.toLocalDate()+" at "+outTime.toLocalTime());

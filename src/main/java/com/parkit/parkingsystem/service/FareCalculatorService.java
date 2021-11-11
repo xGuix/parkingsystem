@@ -1,5 +1,6 @@
 package com.parkit.parkingsystem.service;
 
+import java.text.DecimalFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -23,53 +24,42 @@ public class FareCalculatorService {
         //Récupération de la durée in vs out
         Duration parkTime = getParkDurationInHour(ticket);
         double timeInMinutes = parkTime.toMinutes();
-        double timeInHours = parkTime.toHours();
+        
+        DecimalFormat roundDec = new DecimalFormat("#.##"); 
 
 		if (parkTime.toMinutes()<30) {
         	ticket.setPrice(0);
         }
         else{
-        
 	        switch (ticket.getParkingSpot().getParkingType()){
-	            
-	            case CAR: {
-	            	if (timeInMinutes>=30 && timeInMinutes<=60 && timeInHours==0) {
-	                	ticket.setPrice(Fare.CAR_RATE_PER_HOUR * calculateFareForReccurentUser());
-	                }
-	                else {
-	                	ticket.setPrice(timeInHours * (Fare.CAR_RATE_PER_HOUR * calculateFareForReccurentUser())+1.5);
+
+	        	case CAR: {
+	        		ticket.setPrice(Double.valueOf(roundDec.format(timeInMinutes/60 * (Fare.CAR_RATE_PER_HOUR * calculateFareForReccurentUser(ticket)))));
 	               }
 	                break;
-	            }
 	            
 	            case BIKE: {
-					if (timeInMinutes>=30 && timeInMinutes<=60 && timeInHours==0) {
-				    	ticket.setPrice(Fare.BIKE_RATE_PER_HOUR * calculateFareForReccurentUser());
+	        		ticket.setPrice(Double.valueOf(roundDec.format(timeInMinutes/60 * (Fare.BIKE_RATE_PER_HOUR * calculateFareForReccurentUser(ticket)))));
 				    }
-					else {
-						ticket.setPrice(timeInHours * (Fare.BIKE_RATE_PER_HOUR * calculateFareForReccurentUser())+1.0);
-					}
 	                break;
-	            }
+	            
 	            default: throw new IllegalArgumentException("Unkown Parking Type");
 	        }
         }
     }
    
-
     public Duration getParkDurationInHour(Ticket ticket) {
 	    LocalDateTime inHour = ticket.getInTime();
 	    LocalDateTime outHour = ticket.getOutTime();
 	    return Duration.between(inHour,outHour);
     }
     
-    //Cacul de l'utilisateur reccurent renvoi 1 ou 0.95
-    public Double calculateFareForReccurentUser() {
-    	Ticket ticket = new Ticket();
-    	String vehicleRegNumber = ticket.getVehicleRegNumber();
-    	Double result = (double) 0;
+    // Cacul de l'utilisateur reccurent renvoi 1 ou 0.95
+    public Double calculateFareForReccurentUser(Ticket ticket) {
+
+    	Double result = 0.0;
     	try {
-			if(ticketDAO.getIfRecurrentUser(vehicleRegNumber)) {
+			if(ticketDAO.getIfRecurrentUser(ticket.getVehicleRegNumber())) {
 				result = 0.95;
 			}
 			else {
