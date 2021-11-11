@@ -141,13 +141,14 @@ class FareCalculatorServiceTest {
     @Test
     void CalculateFareCarIfRecurrentUser(){
 	    // ARRANGE
-    	DecimalFormat roundDec = new DecimalFormat("#.##");
+    	
     	ticket.setInTime(LocalDateTime.now());
     	ticket.setOutTime(LocalDateTime.now().plusMinutes(60));
     	ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR,false);
     	ticket.setParkingSpot(parkingSpot);
 	    // ACT
     	when(ticketDAO.getIfRecurrentUser(ticket.getVehicleRegNumber())).thenReturn(true);
+        DecimalFormat roundDec = new DecimalFormat("#.##");
     	fareCalculatorService.calculateFare(ticket);
 	    // ASSERT
 		assertEquals(Double.valueOf(roundDec.format(0.95*Fare.CAR_RATE_PER_HOUR)),ticket.getPrice());
@@ -156,13 +157,13 @@ class FareCalculatorServiceTest {
     @Test
     void CalculateFareBikeIfRecurrentUser(){
 	    // ARRANGE
-    	DecimalFormat roundDec = new DecimalFormat("#.##");
     	ticket.setInTime(LocalDateTime.now());
     	ticket.setOutTime(LocalDateTime.now().plusMinutes(60));
     	ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE,false);
     	ticket.setParkingSpot(parkingSpot);
 	    // ACT
     	when(ticketDAO.getIfRecurrentUser(ticket.getVehicleRegNumber())).thenReturn(true);
+    	DecimalFormat roundDec = new DecimalFormat("#.##");
     	fareCalculatorService.calculateFare(ticket);
 	    // ASSERT
 		assertEquals(Double.valueOf(roundDec.format(0.95*Fare.BIKE_RATE_PER_HOUR)),ticket.getPrice());
@@ -171,28 +172,28 @@ class FareCalculatorServiceTest {
     @Test
     void calculateFareForReccurentCarWithADayParkingTime() {
 
-    	DecimalFormat roundDec = new DecimalFormat("#.##");
         ticket.setInTime(LocalDateTime.now());
         ticket.setOutTime(LocalDateTime.now().plusHours(24));
         ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR,false);
         ticket.setParkingSpot(parkingSpot);
         
         when(ticketDAO.getIfRecurrentUser(ticket.getVehicleRegNumber())).thenReturn(true);
+        DecimalFormat roundDec = new DecimalFormat("#.##");
         fareCalculatorService.calculateFare(ticket);
-        
+
         assertEquals(Double.valueOf(roundDec.format(0.95*Fare.CAR_RATE_PER_HOUR*24)), ticket.getPrice());
     }
     
     @Test
     void calculateFareForReccurentBikeWithADayParkingTime() {
     	
-    	DecimalFormat roundDec = new DecimalFormat("#.##");
         ticket.setInTime(LocalDateTime.now());
         ticket.setOutTime(LocalDateTime.now().plusHours(24));
         ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE,false);
         ticket.setParkingSpot(parkingSpot);
         
         when(ticketDAO.getIfRecurrentUser(ticket.getVehicleRegNumber())).thenReturn(true);
+        DecimalFormat roundDec = new DecimalFormat("#.##");
         fareCalculatorService.calculateFare(ticket);
         
         assertEquals(Double.valueOf(roundDec.format(0.95*Fare.BIKE_RATE_PER_HOUR*24)), ticket.getPrice());

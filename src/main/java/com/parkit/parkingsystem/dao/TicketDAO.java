@@ -77,20 +77,18 @@ public class TicketDAO {
         return ticket;
     }
     
-    
     // Methode public boolean renvoi True si le VehicleRegNumber à un ticket en BDD
     // via BDConstants.CHECK_IF_VEHICLE_ALREADY_COME
 	public boolean getIfRecurrentUser(String vehicleRegNumber) {
     	
-		Boolean recurrentUser= false;
     	Connection con = null;
         try {
             con = dataBaseConfig.getConnection();
             PreparedStatement ps = con.prepareStatement(DBConstants.CHECK_IF_VEHICLE_ALREADY_COME);
             ps.setString(1,vehicleRegNumber);
             ResultSet rs = ps.executeQuery();
-			if(rs.isFirst()){
-            	recurrentUser=true;
+			if(rs.next()){
+            	return true;
             }
 			dataBaseConfig.closeResultSet(rs);
             dataBaseConfig.closePreparedStatement(ps);
@@ -100,11 +98,9 @@ public class TicketDAO {
         }
         finally {
             dataBaseConfig.closeConnection(con);
-            
         }
-		return recurrentUser;
+		return false;
     }
-
     
     public boolean updateTicket(Ticket ticket) {
     	
@@ -123,7 +119,6 @@ public class TicketDAO {
         }
         finally {
             dataBaseConfig.closeConnection(con);
-            
         }
         return false;
     }

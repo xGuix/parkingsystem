@@ -47,10 +47,10 @@ public class ParkingService {
                 ticket.setPrice(0);
                 ticket.setInTime(inTime);
                 ticket.setOutTime(null);
+                ticket.setRecurrentUser(ticketDAO.getIfRecurrentUser(vehicleRegNumber));
                 ticketDAO.saveTicket(ticket);
                 System.out.println("============================================================================================");
                 System.out.println("Generated Ticket and saved in DataBase");
-                System.out.println("--------------------------------------------------------------------------------------------");
                 System.out.println("Please park your vehicle in spot number: "+ parkingSpot.getId());
                 System.out.println("Recorded in-time for vehicle number: "+ticket.getVehicleRegNumber()+" / In-time The: "+inTime.toLocalDate()+" at "+inTime.toLocalTime());
                 System.out.println("--------------------------------------------------------------------------------------------");
@@ -128,11 +128,9 @@ public class ParkingService {
             	ParkingSpot parkingSpot = ticket.getParkingSpot();
                 parkingSpot.setAvailable(true);
                 parkingSpotDAO.updateParking(parkingSpot);
-               
-                if (ticketDAO.getIfRecurrentUser(vehicleRegNumber)) {
+                if (ticket.getRecurrentUser()) {
                     System.out.println("============================================================================================");
                 	System.out.println("Welcome back! As usual user, you get benefit of 5% discount!");
-                	ticket.setRecurrentUser(true);
                 }
                 System.out.println("--------------------------------------------------------------------------------------------");
                 System.out.println("Please pay the parking fare: "+ticket.getPrice()+"€");

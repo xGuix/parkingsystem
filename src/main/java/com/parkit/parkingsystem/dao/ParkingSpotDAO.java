@@ -45,7 +45,6 @@ public class ParkingSpotDAO {
     // via BDConstants.
 	public boolean checkIfUserAlreadyIn(String vehicleRegNumber) {
     	
-		Boolean inParkUser= false;
     	Connection con = null;
         try {
             con = dataBaseConfig.getConnection();
@@ -53,7 +52,7 @@ public class ParkingSpotDAO {
             ps.setString(1,vehicleRegNumber);
             ResultSet rs = ps.executeQuery();
 			if(rs.next()){
-            	inParkUser=true;
+            	return true;
             }
 			dataBaseConfig.closeResultSet(rs);
             dataBaseConfig.closePreparedStatement(ps);
@@ -65,7 +64,7 @@ public class ParkingSpotDAO {
             dataBaseConfig.closeConnection(con);
             
         }
-		return inParkUser;
+		return false;
     }
 
     public boolean updateParking(ParkingSpot parkingSpot){
