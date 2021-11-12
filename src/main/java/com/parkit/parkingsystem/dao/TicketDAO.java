@@ -87,7 +87,7 @@ public class TicketDAO {
             PreparedStatement ps = con.prepareStatement(DBConstants.CHECK_IF_VEHICLE_ALREADY_COME);
             ps.setString(1,vehicleRegNumber);
             ResultSet rs = ps.executeQuery();
-			if(rs.isLast()){
+			if(rs.next()){
             	return true;
             }
 			dataBaseConfig.closeResultSet(rs);

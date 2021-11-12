@@ -92,17 +92,21 @@
 			<version>21.0.1</version>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+		    <groupId>eu.codearte.catch-exception</groupId>
+		    <artifactId>catch-exception</artifactId>
+		    <version>2.0</version>
+		    <scope>test</scope>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
-			
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>3.3.0</version>
 				<executions>
 					<execution>
-					
 						<phase>package</phase>
 						<goals>
 							<goal>single</goal>
@@ -115,13 +119,10 @@
 									</mainClass>
 								</manifest>
 							</archive>
-							
 							<descriptorRefs>
 								<descriptorRef>jar-with-dependencies</descriptorRef>
 							</descriptorRefs>
-							
 						</configuration>
-						
 					</execution>
 				</executions>
 			</plugin>
@@ -156,7 +157,6 @@
 							<includes>
 								<include>**/*IT.java</include>
 							</includes>
-							
 						</configuration>
 					</execution>
 				</executions>

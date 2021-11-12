@@ -1,14 +1,15 @@
 package com.parkit.parkingsystem;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -62,28 +63,6 @@ class FareCalculatorServiceTest {
         fareCalculatorService.calculateFare(ticket);
         
         assertEquals(Fare.BIKE_RATE_PER_HOUR,ticket.getPrice());
-    }
-
-    @Test
-    void calculateFareUnkownType(){
-    	
-        ticket.setInTime(LocalDateTime.now());
-        ticket.setOutTime(LocalDateTime.now().plusMinutes(45));
-        ParkingSpot parkingSpot = new ParkingSpot(1, null,false);
-        ticket.setParkingSpot(parkingSpot);
-        
-        assertThrows(NullPointerException.class, () -> fareCalculatorService.calculateFare(ticket));
-    }
-    
-    @Test
-    void calculateFareBikeWithFutureInTime(){
-    	
-    	ticket.setInTime(LocalDateTime.MAX);
-    	ticket.setOutTime(LocalDateTime.MIN);
-        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE,false);
-        ticket.setParkingSpot(parkingSpot);
-        
-        assertThrows(IllegalArgumentException.class, () -> fareCalculatorService.calculateFare(ticket));
     }
 
     @Test
@@ -141,7 +120,6 @@ class FareCalculatorServiceTest {
     @Test
     void CalculateFareCarIfRecurrentUser(){
 	    // ARRANGE
-    	
     	ticket.setInTime(LocalDateTime.now());
     	ticket.setOutTime(LocalDateTime.now().plusMinutes(60));
     	ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR,false);
@@ -201,7 +179,7 @@ class FareCalculatorServiceTest {
 
     @Test
     void checkIfRecurrentUserSendTrue(){
-        // ARRANGE
+
         // ACT
         when(ticketDAO.getIfRecurrentUser(ticket.getVehicleRegNumber())).thenReturn(true);
         // ASSERT
@@ -210,17 +188,76 @@ class FareCalculatorServiceTest {
     
     @Test
     void checkIfRecurrentUserSendFalse(){
-        // ARRANGE
+
         // ACT
         when(ticketDAO.getIfRecurrentUser(ticket.getVehicleRegNumber())).thenReturn(false);
         // ASSERT
         assertEquals(1.0, fareCalculatorService.calculateFareForReccurentUser(ticket));
     }
     
-    @Disabled
-    @Test 
-    void checkIfIllegalExceptionIsSend(){
-    	when(ticket.getParkingSpot().getParkingType()).thenThrow(Exception.class);
-    	assertThrows(Exception.class, () -> fareCalculatorService.calculateFare(ticket));
+    @Test
+    void calculateFareBikeWithFutureInTime(){
+    	
+    	ticket.setInTime(LocalDateTime.MAX);
+    	ticket.setOutTime(LocalDateTime.MIN);
+        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE,false);
+        ticket.setParkingSpot(parkingSpot);
+        
+        assertThrows(IllegalArgumentException.class, () -> fareCalculatorService.calculateFare(ticket));
     }
+    
+    @Test
+    void calculateFareCarWithFutureInTime(){
+    	
+    	ticket.setInTime(LocalDateTime.MAX);
+    	ticket.setOutTime(LocalDateTime.MIN);
+        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR,false);
+        ticket.setParkingSpot(parkingSpot);
+        
+        assertThrows(IllegalArgumentException.class, () -> fareCalculatorService.calculateFare(ticket));
+    }
+    
+    @Test
+    void calculateFareUnkownType(){
+    	
+        ticket.setInTime(LocalDateTime.now());
+        ticket.setOutTime(LocalDateTime.now().plusMinutes(45));
+        ParkingSpot parkingSpot = new ParkingSpot(1, null,false);
+        ticket.setParkingSpot(parkingSpot);
+        
+        assertThrows(NullPointerException.class, () -> fareCalculatorService.calculateFare(ticket));
+    }
+    
+    @Test
+    void checkOutTimeIsNull(){
+    	
+        ticket.setOutTime(null);
+    	ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR,false);
+    	ticket.setParkingSpot(parkingSpot);
+        
+        assertThrows(NullPointerException.class, () -> fareCalculatorService.calculateFare(ticket));
+    }
+    
+    @Test
+    void checkIfCalculateFareSendIllegalArgumentException(){
+    	// ARRANGE
+    	ticket.setInTime(LocalDateTime.now().minusMinutes(60));
+    	ticket.setOutTime(LocalDateTime.now());
+    	ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.UNKNOW,false);
+    	ticket.setParkingSpot(parkingSpot);
+    	// ACT
+    	// ASSERT
+    	assertThrows(IllegalArgumentException.class, () -> fareCalculatorService.calculateFare(ticket));
+    }
+
+    @Test
+    void checkIfcalculateFareForRecurrentSendException() throws Exception {
+    	
+    	// ACT
+    	fareCalculatorService.calculateFareForReccurentUser(ticket);
+    	// ARRANGE
+    	assertThat(catchThrowable(() -> { throw new Exception(); })).isInstanceOf(Exception.class);
+
+    }
+    
 }
