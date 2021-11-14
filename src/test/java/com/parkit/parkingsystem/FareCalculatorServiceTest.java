@@ -1,7 +1,5 @@
 package com.parkit.parkingsystem;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -183,7 +181,7 @@ class FareCalculatorServiceTest {
         // ACT
         when(ticketDAO.getIfRecurrentUser(ticket.getVehicleRegNumber())).thenReturn(true);
         // ASSERT
-        assertEquals(0.95, fareCalculatorService.calculateFareForReccurentUser(ticket));
+        assertEquals(0.95, fareCalculatorService.calculateFareForRecurrentUser(ticket));
     }
     
     @Test
@@ -192,7 +190,7 @@ class FareCalculatorServiceTest {
         // ACT
         when(ticketDAO.getIfRecurrentUser(ticket.getVehicleRegNumber())).thenReturn(false);
         // ASSERT
-        assertEquals(1.0, fareCalculatorService.calculateFareForReccurentUser(ticket));
+        assertEquals(1.0, fareCalculatorService.calculateFareForRecurrentUser(ticket));
     }
     
     @Test
@@ -249,15 +247,13 @@ class FareCalculatorServiceTest {
     	// ASSERT
     	assertThrows(IllegalArgumentException.class, () -> fareCalculatorService.calculateFare(ticket));
     }
-
+    
     @Test
-    void checkIfcalculateFareForRecurrentSendException() throws Exception {
+    void checkIfcalculateFareForRecurrentSendException(){
     	
     	// ACT
-    	fareCalculatorService.calculateFareForReccurentUser(ticket);
+    	fareCalculatorService.calculateFareForRecurrentUser(ticket);
     	// ARRANGE
-    	assertThat(catchThrowable(() -> { throw new Exception(); })).isInstanceOf(Exception.class);
-
-    }
-    
+    	assertThrows(Exception.class, () -> { throw new Exception(); }).getCause();
+	}
 }

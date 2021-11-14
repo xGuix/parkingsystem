@@ -34,12 +34,12 @@ public class FareCalculatorService {
 	        switch (ticket.getParkingSpot().getParkingType()){
 
 	        	case CAR: {
-	        		ticket.setPrice(Double.valueOf(roundDec.format(timeInMinutes/60 * (Fare.CAR_RATE_PER_HOUR * calculateFareForReccurentUser(ticket)))));
+	        		ticket.setPrice(Double.valueOf(roundDec.format(timeInMinutes/60 * (Fare.CAR_RATE_PER_HOUR * calculateFareForRecurrentUser(ticket)))));
 	               }
 	                break;
 	            
 	            case BIKE: {
-	        		ticket.setPrice(Double.valueOf(roundDec.format(timeInMinutes/60 * (Fare.BIKE_RATE_PER_HOUR * calculateFareForReccurentUser(ticket)))));
+	        		ticket.setPrice(Double.valueOf(roundDec.format(timeInMinutes/60 * (Fare.BIKE_RATE_PER_HOUR * calculateFareForRecurrentUser(ticket)))));
 				    }
 	                break;
 	            
@@ -55,7 +55,7 @@ public class FareCalculatorService {
     }
     
     // Cacul de l'utilisateur reccurent renvoi 1 ou 0.95
-    public Double calculateFareForReccurentUser(Ticket ticket) {
+    public Double calculateFareForRecurrentUser(Ticket ticket) {
 
     	Double result = 0.0;
     	try {
@@ -65,10 +65,10 @@ public class FareCalculatorService {
 			else {
 				result = 1.0;
 			}
-		} 
+    	}
     	catch (Exception e) {
-			e.printStackTrace();
-		}
+    		e.printStackTrace();
+    	}
 		return result;
     }
 }

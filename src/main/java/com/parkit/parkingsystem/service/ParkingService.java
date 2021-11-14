@@ -1,5 +1,6 @@
 package com.parkit.parkingsystem.service;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 import org.apache.logging.log4j.LogManager;
@@ -133,7 +134,7 @@ public class ParkingService {
                 	System.out.println("Welcome back! As usual user, you get benefit of 5% discount!");
                 }
                 System.out.println("--------------------------------------------------------------------------------------------");
-                System.out.println("Please pay the parking fare: "+ticket.getPrice()+"€");
+                System.out.println("Please pay the parking fare: "+ticket.getPrice()+"€ for: "+ Duration.between(ticket.getInTime(),ticket.getOutTime()).toMinutes() +" minutes of park.");
                 System.out.println("Recorded out-time for vehicle number: "+ticket.getVehicleRegNumber()+" / Out-time The: "+outTime.toLocalDate()+" at "+outTime.toLocalTime());
                 System.out.println("============================================================================================");
             }
