@@ -105,6 +105,7 @@ class ParkingDataBaseIT {
         // THEN
         assertEquals(true, ticket.getPrice() >= 0);
         assertNotNull(ticket.getOutTime());
+        
         // TODO: check that the fare generated and out time are populated correctly in the database
     }
 

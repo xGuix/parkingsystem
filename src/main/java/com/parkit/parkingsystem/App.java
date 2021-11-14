@@ -5,6 +5,9 @@ import org.apache.logging.log4j.Logger;
 
 import com.parkit.parkingsystem.service.InteractiveShell;
 
+import groovy.transform.Generated;
+
+@Generated
 public class App {
     private static final Logger logger = LogManager.getLogger("App");
     

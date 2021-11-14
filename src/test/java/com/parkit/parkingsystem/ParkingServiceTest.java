@@ -1,5 +1,6 @@
 package com.parkit.parkingsystem;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
@@ -129,4 +130,28 @@ class ParkingServiceTest {
         verify(ticketDAO, Mockito.times(1)).updateTicket(any(Ticket.class));
     }
 
+    @Test
+    void processExitingVehicleAsRecurrentUserTest() {
+    	// GIVEN
+    	when(ticketDAO.getTicket(anyString())).thenReturn(ticket);
+        when(ticketDAO.updateTicket(any(Ticket.class))).thenReturn(true);
+        ticket.setRecurrentUser(true);
+    	// WHEN
+		parkingService.processExitingVehicle();
+
+		// THEN
+        verify(ticketDAO, Mockito.times(1)).updateTicket(any(Ticket.class));
+	    assertEquals(true, ticket.getRecurrentUser());
+    }
+    
+    @Test
+    void processExitingVehicleUpdateTicketFailed() {
+    	// GIVEN
+    	when(ticketDAO.getTicket(anyString())).thenReturn(ticket);
+        when(ticketDAO.updateTicket(any(Ticket.class))).thenReturn(false);
+    	// WHEN
+		parkingService.processExitingVehicle();
+		// THEN
+        verify(ticketDAO, Mockito.times(1)).updateTicket(any(Ticket.class));
+    }
 }
