@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.AfterAll;
@@ -64,6 +63,7 @@ class ParkingDataBaseIT {
 
 	@Test
     void testParkingACar() throws Exception{
+		
     	// GIVEN
 		parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
 		parkingService.getNextParkingNumberIfAvailable().getId();
@@ -78,18 +78,19 @@ class ParkingDataBaseIT {
 	}
 	
 	@Test
-	public void testParkingABike() {
+	void testParkingABike() throws Exception{
+		
+		// GIVEN
 		ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
 		parkingService.processIncomingVehicle();
 		ParkingSpot parkingSpot = new ParkingSpot(2, ParkingType.BIKE, false);
-		try {
-			dataBaseTestConfig.getConnection();
-			parkingSpotDAO.getNextAvailableSlot(ParkingType.BIKE);
-			parkingSpotDAO.updateParking(parkingSpot);
-			assertNotNull(parkingSpot);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
+		// WHEN
+		dataBaseTestConfig.getConnection();
+		parkingSpotDAO.getNextAvailableSlot(ParkingType.BIKE);
+		parkingSpotDAO.updateParking(parkingSpot);
+		// THEN
+		assertNotNull(parkingSpot);
+		assertEquals(ParkingType.BIKE, parkingSpot.getParkingType());
 	}
 			
     @Test	
@@ -105,25 +106,26 @@ class ParkingDataBaseIT {
         // THEN
         assertEquals(true, ticket.getPrice() >= 0);
         assertNotNull(ticket.getOutTime());
-        
         // TODO: check that the fare generated and out time are populated correctly in the database
     }
 
     @Test
-	public void testIfRecurrentUserWithReduction() {
+	void testIfRecurrentUserWithReduction()  throws Exception{
+    	
+    	// GIVEN
 		parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
 		parkingService.processIncomingVehicle();
 		ticket.setOutTime(LocalDateTime.now().plusMinutes(60));
 		ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
-		try {
-			dataBaseTestConfig.getConnection();
-			parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR);
-			parkingSpotDAO.updateParking(parkingSpot);
-			ticketDAO.saveTicket(ticket);
-			parkingService.processExitingVehicle();
-			assertNotNull(ticket.getPrice());
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
+		// WHEN
+		dataBaseTestConfig.getConnection();
+		parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR);
+		parkingSpotDAO.updateParking(parkingSpot);
+		ticketDAO.saveTicket(ticket);
+		parkingService.processExitingVehicle();
+		// THEN
+	    assertEquals(true, ticket.getPrice() >= 0);
+	    assertNotNull(ticket.getOutTime());
+	    assertEquals(true, ticketDAO.getIfRecurrentUser("ABCDEF"));
 	}
 }

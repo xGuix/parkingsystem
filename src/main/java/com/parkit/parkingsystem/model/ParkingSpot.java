@@ -2,6 +2,8 @@ package com.parkit.parkingsystem.model;
 
 import com.parkit.parkingsystem.constants.ParkingType;
 
+import groovy.transform.Generated;
+
 public class ParkingSpot {
     private int number;
     private ParkingType parkingType;
@@ -36,7 +38,8 @@ public class ParkingSpot {
     public void setAvailable(boolean available) {
         isAvailable = available;
     }
-
+    
+    @Generated
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -48,7 +51,8 @@ public class ParkingSpot {
         ParkingSpot that = (ParkingSpot) o;
         return number == that.number;
     }
-
+    
+    @Generated
     @Override
     public int hashCode() {
         return number;
