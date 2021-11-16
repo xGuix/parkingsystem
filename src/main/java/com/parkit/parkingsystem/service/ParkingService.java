@@ -1,5 +1,6 @@
 package com.parkit.parkingsystem.service;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 import org.apache.logging.log4j.LogManager;
@@ -49,16 +50,16 @@ public class ParkingService {
                 ticket.setOutTime(null);
                 ticket.setRecurrentUser(ticketDAO.getIfRecurrentUser(vehicleRegNumber));
                 ticketDAO.saveTicket(ticket);
-                System.out.println("============================================================================================");
-                System.out.println("Generated Ticket and saved in DataBase");
-                System.out.println("Please park your vehicle in spot number: "+ parkingSpot.getId());
-                System.out.println("Recorded in-time for vehicle number: "+ticket.getVehicleRegNumber()+" / In-time The: "+inTime.toLocalDate()+" at "+inTime.toLocalTime());
-                System.out.println("--------------------------------------------------------------------------------------------");
+                logger.info("============================================================================================");
+                logger.info("Generated Ticket and saved in DataBase");
+                logger.info("Please park your vehicle in spot number: "+ parkingSpot.getId());
+                logger.info("Recorded in-time for vehicle number: "+ticket.getVehicleRegNumber()+" / In-time The: "+inTime.toLocalDate()+" at "+inTime.toLocalTime());
+                logger.info("--------------------------------------------------------------------------------------------");
             }
             else {
-            	System.out.println("--------------------------------------------------------------------------------------------");
-            	System.out.println("Error, Incoming Vehicule. Please set an other Registration Number.");
-            	System.out.println("This vehicule seems already park in. Thanks");
+            	logger.info("--------------------------------------------------------------------------------------------");
+            	logger.info("Error, Incoming Vehicule. Please set an other Registration Number.");
+            	logger.info("This vehicule seems already park in. Thanks");
             }
         }
         catch(Exception e){
@@ -68,7 +69,7 @@ public class ParkingService {
     }
 
     private String getVehicleRegNumber() {
-    	System.out.println("Please type the vehicle registration number and press enter key");
+    	logger.info("Please type the vehicle registration number and press enter key");
         return inputReaderUtil.readVehicleRegistrationNumber();
     }
 
@@ -95,9 +96,9 @@ public class ParkingService {
     }
 
     private ParkingType getVehicleType(){
-    	System.out.println("Please select vehicle type from menu");
-    	System.out.println("1 CAR");
-    	System.out.println("2 BIKE");
+    	logger.info("Please select vehicle type from menu");
+    	logger.info("1 CAR");
+    	logger.info("2 BIKE");
         int input = inputReaderUtil.readSelection();
         switch(input){
             case 1: {
@@ -107,7 +108,7 @@ public class ParkingService {
                 return ParkingType.BIKE;
             }
             default: {
-            	System.out.println("Incorrect input provided");
+            	logger.info("Incorrect input provided");
                 throw new IllegalArgumentException("Entered input is invalid");
             }
         }
@@ -129,16 +130,16 @@ public class ParkingService {
                 parkingSpot.setAvailable(true);
                 parkingSpotDAO.updateParking(parkingSpot);
                 if (ticket.getRecurrentUser()) {
-                    System.out.println("============================================================================================");
-                	System.out.println("Welcome back! As usual user, you get benefit of 5% discount!");
+                	logger.info("============================================================================================");
+                	logger.info("Welcome back! As usual user, you get benefit of 5% discount!");
                 }
-                System.out.println("--------------------------------------------------------------------------------------------");
-                System.out.println("Please pay the parking fare: "+ticket.getPrice()+"€");
-                System.out.println("Recorded out-time for vehicle number: "+ticket.getVehicleRegNumber()+" / Out-time The: "+outTime.toLocalDate()+" at "+outTime.toLocalTime());
-                System.out.println("============================================================================================");
+                logger.info("--------------------------------------------------------------------------------------------");
+                logger.info("Please pay the parking fare: "+ticket.getPrice()+"€ for: "+ Duration.between(ticket.getInTime(),ticket.getOutTime()).toMinutes() +" minutes of park.");
+                logger.info("Recorded out-time for vehicle number: "+ticket.getVehicleRegNumber()+" / Out-time The: "+outTime.toLocalDate()+" at "+outTime.toLocalTime());
+                logger.info("============================================================================================");
             }
             else{
-            	System.out.println("Unable to update ticket information. Error occurred");
+            	logger.info("Unable to update ticket information. Error occurred");
             }
         }
         catch(Exception e){
