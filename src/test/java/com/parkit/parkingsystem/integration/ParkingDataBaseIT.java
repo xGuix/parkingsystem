@@ -118,7 +118,6 @@ class ParkingDataBaseIT {
 		ticket.setOutTime(LocalDateTime.now().plusMinutes(60));
 		ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
 		// WHEN
-		dataBaseTestConfig.getConnection();
 		parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR);
 		parkingSpotDAO.updateParking(parkingSpot);
 		ticketDAO.saveTicket(ticket);
@@ -127,5 +126,6 @@ class ParkingDataBaseIT {
 	    assertEquals(true, ticket.getPrice() >= 0);
 	    assertNotNull(ticket.getOutTime());
 	    assertEquals(true, ticketDAO.getIfRecurrentUser("ABCDEF"));
+
 	}
 }

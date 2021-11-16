@@ -59,7 +59,8 @@ class ParkingServiceTest {
         }
     }
        
-	//Check parking availability in database via parkingNumber and parkingType
+	//Check parking availability in database for Car & Bike via parkingNumber and parkingType
+    //Check ifRecurrentUser
 	@Test
 	void processIncomingVehicleTest() {
 		// GIVEN
@@ -135,8 +136,8 @@ class ParkingServiceTest {
     	// GIVEN
     	when(ticketDAO.getTicket(anyString())).thenReturn(ticket);
         when(ticketDAO.updateTicket(any(Ticket.class))).thenReturn(true);
-        ticket.setRecurrentUser(true);
     	// WHEN
+        ticket.setRecurrentUser(true);
 		parkingService.processExitingVehicle();
 
 		// THEN
