@@ -51,9 +51,9 @@ class ParkingDataBaseIT {
 
     @BeforeEach
     private void setUpPerTest() throws Exception {
+    	dataBasePrepareService.clearDataBaseEntries();
         when(inputReaderUtil.readSelection()).thenReturn(1);
         when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
-    	dataBasePrepareService.clearDataBaseEntries();
     }
 
 	@AfterAll
@@ -113,19 +113,25 @@ class ParkingDataBaseIT {
     }
 
     @Test
-	void testIfRecurrentUserWithReduction()  throws Exception{
+	void testToGetTicketWithRecurrentUser()  throws Exception{
     	
     	// GIVEN
 		parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
+		parkingService.getNextParkingNumberIfAvailable().getId();
 		ticket.setOutTime(LocalDateTime.now().plusMinutes(60));
 		// WHEN
 		parkingService.processIncomingVehicle();
+		ticketDAO.getTicket(ticket.getVehicleRegNumber());
+		ticket.setRecurrentUser(true);
+		ticketDAO.getIfRecurrentUser(ticket.getVehicleRegNumber());
 		parkingService.processExitingVehicle();
 		// THEN
         assertThat(parkingService.getNextParkingNumberIfAvailable().getId()).isEqualTo(1);
-	    assertEquals(true, ticketDAO.getIfRecurrentUser("ABCDEF"));
+	    assertEquals(ticketDAO.getTicket(ticket.getVehicleRegNumber()), ticket.getVehicleRegNumber());
+	    assertEquals(true, ticket.getRecurrentUser());
 	    assertNotNull(ticket.getOutTime());
 	    assertEquals(true, ticket.getPrice() >= 0);
 	    assertThat(ticketDAO.updateTicket(ticket)).isTrue();
+	    assertThat(ticketDAO.getIfRecurrentUser("ABCDEF")).isTrue();
 	}
 }

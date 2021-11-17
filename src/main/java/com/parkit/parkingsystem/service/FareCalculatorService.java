@@ -33,12 +33,12 @@ public class FareCalculatorService {
 	        switch (ticket.getParkingSpot().getParkingType()){
 
 	        	case CAR: {
-	        		ticket.setPrice(Double.valueOf(roundDec.format(timeInMinutes/60 * (Fare.CAR_RATE_PER_HOUR * calculateFareForRecurrentUser(ticket)))));
+	        		ticket.setPrice(Double.parseDouble(roundDec.format(timeInMinutes/60 * (Fare.CAR_RATE_PER_HOUR * calculateFareForRecurrentUser(ticket)))));
 	               }
 	                break;
 	            
 	            case BIKE: {
-	        		ticket.setPrice(Double.valueOf(roundDec.format(timeInMinutes/60 * (Fare.BIKE_RATE_PER_HOUR * calculateFareForRecurrentUser(ticket)))));
+	        		ticket.setPrice(Double.parseDouble(roundDec.format(timeInMinutes/60 * (Fare.BIKE_RATE_PER_HOUR * calculateFareForRecurrentUser(ticket)))));
 				    }
 	                break;
 	            

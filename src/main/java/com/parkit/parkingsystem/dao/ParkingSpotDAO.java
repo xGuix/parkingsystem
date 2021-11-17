@@ -25,7 +25,6 @@ public class ParkingSpotDAO {
             PreparedStatement ps = con.prepareStatement(DBConstants.GET_NEXT_PARKING_SPOT);
             ps.setString(1, parkingType.toString());
             ResultSet rs = ps.executeQuery();
-            
             if(rs.next()){
                 result = rs.getInt(1);
             }
@@ -36,6 +35,8 @@ public class ParkingSpotDAO {
             logger.error("Error fetching next available slot",ex);
         }
         finally {
+			dataBaseConfig.closeResultSet(null);
+            dataBaseConfig.closePreparedStatement(null);
             dataBaseConfig.closeConnection(con);
         }
         return result;
@@ -61,6 +62,8 @@ public class ParkingSpotDAO {
             logger.error("Error fetching to ParkingSpot, Vehicle Already InPark",ex);
         }
         finally {
+			dataBaseConfig.closeResultSet(null);
+            dataBaseConfig.closePreparedStatement(null);
             dataBaseConfig.closeConnection(con);
             
         }
@@ -84,6 +87,7 @@ public class ParkingSpotDAO {
             return false;
         }
         finally {
+            dataBaseConfig.closePreparedStatement(null);
             dataBaseConfig.closeConnection(con);
         }
     }

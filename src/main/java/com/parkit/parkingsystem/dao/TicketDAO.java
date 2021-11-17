@@ -17,7 +17,6 @@ import com.parkit.parkingsystem.model.Ticket;
 public class TicketDAO {
 
     private static final Logger logger = LogManager.getLogger(TicketDAO.class);
-    
     public DataBaseConfig dataBaseConfig = new DataBaseConfig();
 
 	public boolean saveTicket(Ticket ticket){
@@ -39,6 +38,7 @@ public class TicketDAO {
             logger.error("Error fetching next available slot",ex);
         }
 		finally {
+            dataBaseConfig.closePreparedStatement(null);
 			dataBaseConfig.closeConnection(con);
 		}
         return false;	
@@ -72,6 +72,8 @@ public class TicketDAO {
             logger.error("Error fetching next available slot",ex);
         }
         finally {
+			dataBaseConfig.closeResultSet(null);
+            dataBaseConfig.closePreparedStatement(null);
             dataBaseConfig.closeConnection(con);
         }
         return ticket;
@@ -97,6 +99,8 @@ public class TicketDAO {
             logger.error("Error fetching to get Ticket",ex);
         }
         finally {
+			dataBaseConfig.closeResultSet(null);
+            dataBaseConfig.closePreparedStatement(null);
             dataBaseConfig.closeConnection(con);
         }
 		return false;
@@ -112,12 +116,14 @@ public class TicketDAO {
             ps.setTimestamp(2, Timestamp.valueOf(ticket.getOutTime()));
             ps.setInt(3,ticket.getId());
             ps.execute();
+            dataBaseConfig.closePreparedStatement(ps);
             return true;
         }
         catch (Exception ex){
             logger.error("Error saving ticket info",ex);
         }
         finally {
+            dataBaseConfig.closePreparedStatement(null);
             dataBaseConfig.closeConnection(con);
         }
         return false;
