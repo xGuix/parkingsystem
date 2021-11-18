@@ -1,38 +1,14 @@
-2021-11-18 17:46:35.823 [main] INFO  ParkingService - Please select vehicle type from menu
-2021-11-18 17:46:35.826 [main] INFO  ParkingService - 1 CAR
-2021-11-18 17:46:35.827 [main] INFO  ParkingService - 2 BIKE
-2021-11-18 17:46:35.827 [main] INFO  ParkingService - Please type the vehicle registration number and press enter key
-2021-11-18 17:46:35.828 [main] INFO  ParkingService - ============================================================================================
-2021-11-18 17:46:35.828 [main] INFO  ParkingService - Generated Ticket and saved in DataBase
-2021-11-18 17:46:35.828 [main] INFO  ParkingService - Please park your vehicle in spot number: 3
-2021-11-18 17:46:35.829 [main] INFO  ParkingService - Recorded in-time for vehicle number: ABCDEF / In-time The: 2021-11-18 at 17:46:35.828
-2021-11-18 17:46:35.829 [main] INFO  ParkingService - --------------------------------------------------------------------------------------------
-2021-11-18 17:46:35.839 [main] INFO  ParkingService - Please select vehicle type from menu
-2021-11-18 17:46:35.840 [main] INFO  ParkingService - 1 CAR
-2021-11-18 17:46:35.840 [main] INFO  ParkingService - 2 BIKE
-2021-11-18 17:46:35.840 [main] INFO  ParkingService - Please type the vehicle registration number and press enter key
-2021-11-18 17:46:35.840 [main] INFO  ParkingService - --------------------------------------------------------------------------------------------
-2021-11-18 17:46:35.841 [main] INFO  ParkingService - Error, Incoming Vehicule. Please set an other Registration Number.
-2021-11-18 17:46:35.841 [main] INFO  ParkingService - This vehicule seems already park in. Thanks
-2021-11-18 17:46:35.844 [main] INFO  ParkingService - Please type the vehicle registration number and press enter key
-2021-11-18 17:46:36.449 [main] INFO  DataBaseConfig - Create DB connection
-2021-11-18 17:46:36.855 [main] INFO  DataBaseConfig - Closing Result Set
-2021-11-18 17:46:36.855 [main] INFO  DataBaseConfig - Closing Prepared Statement
-2021-11-18 17:46:36.857 [main] INFO  DataBaseConfig - Closing DB connection
-2021-11-18 17:46:36.858 [main] INFO  ParkingService - ============================================================================================
-2021-11-18 17:46:36.858 [main] INFO  ParkingService - Welcome back! As usual user, you get benefit of 5% discount!
-2021-11-18 17:46:36.858 [main] INFO  ParkingService - --------------------------------------------------------------------------------------------
-2021-11-18 17:46:36.858 [main] INFO  ParkingService - Please pay the parking fare: 1.5€ for: 60 minutes of park.
-2021-11-18 17:46:36.859 [main] INFO  ParkingService - Recorded out-time for vehicle number: ABCDEF / Out-time The: 2021-11-18 at 17:46:36.449
-2021-11-18 17:46:36.859 [main] INFO  ParkingService - ============================================================================================
-2021-11-18 17:46:36.862 [main] INFO  ParkingService - Please select vehicle type from menu
-2021-11-18 17:46:36.862 [main] INFO  ParkingService - 1 CAR
-2021-11-18 17:46:36.862 [main] INFO  ParkingService - 2 BIKE
-2021-11-18 17:46:36.863 [main] ERROR ParkingService - Error fetching next available parking slot
-java.lang.Exception: Error fetching parking number from DB. Parking slots might be full
-	at com.parkit.parkingsystem.service.ParkingService.getNextParkingNumberIfAvailable(ParkingService.java:86) ~[classes/:?]
-	at com.parkit.parkingsystem.service.ParkingService.processIncomingVehicle(ParkingService.java:38) ~[classes/:?]
-	at com.parkit.parkingsystem.ParkingServiceTest.testErrorIfParkingIsFull(ParkingServiceTest.java:102) ~[test-classes/:?]
+2021-11-18 18:30:23.766 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:24.233 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:24.274 [main] INFO  ParkingService - Please type the vehicle registration number and press enter key
+2021-11-18 18:30:24.278 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:24.324 [main] INFO  DataBaseTestConfig - Closing Result Set
+2021-11-18 18:30:24.324 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:24.325 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:24.926 [main] ERROR ParkingService - Unable to process exiting vehicle
+java.lang.NullPointerException: null
+	at com.parkit.parkingsystem.service.ParkingService.processExitingVehicle(ParkingService.java:124) ~[classes/:?]
+	at com.parkit.parkingsystem.integration.ParkingDataBaseIT.testParkingLotExit(ParkingDataBaseIT.java:104) ~[test-classes/:?]
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_292]
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_292]
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_292]
@@ -98,31 +74,193 @@ java.lang.Exception: Error fetching parking number from DB. Parking slots might 
 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:345) [surefire-booter-3.0.0-M3.jar:3.0.0-M3]
 	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:126) [surefire-booter-3.0.0-M3.jar:3.0.0-M3]
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:418) [surefire-booter-3.0.0-M3.jar:3.0.0-M3]
-2021-11-18 17:46:36.871 [main] INFO  ParkingService - Please type the vehicle registration number and press enter key
-2021-11-18 17:46:36.871 [main] INFO  ParkingService - --------------------------------------------------------------------------------------------
-2021-11-18 17:46:36.871 [main] INFO  ParkingService - Error, Incoming Vehicule. Please set an other Registration Number.
-2021-11-18 17:46:36.871 [main] INFO  ParkingService - This vehicule seems already park in. Thanks
-2021-11-18 17:46:36.875 [main] INFO  ParkingService - Please type the vehicle registration number and press enter key
-2021-11-18 17:46:37.478 [main] INFO  DataBaseConfig - Create DB connection
-2021-11-18 17:46:37.493 [main] INFO  DataBaseConfig - Closing Result Set
-2021-11-18 17:46:37.493 [main] INFO  DataBaseConfig - Closing Prepared Statement
-2021-11-18 17:46:37.493 [main] INFO  DataBaseConfig - Closing DB connection
-2021-11-18 17:46:37.494 [main] INFO  ParkingService - --------------------------------------------------------------------------------------------
-2021-11-18 17:46:37.494 [main] INFO  ParkingService - Please pay the parking fare: 1.5€ for: 60 minutes of park.
-2021-11-18 17:46:37.494 [main] INFO  ParkingService - Recorded out-time for vehicle number: ABCDEF / Out-time The: 2021-11-18 at 17:46:37.478
-2021-11-18 17:46:37.494 [main] INFO  ParkingService - ============================================================================================
-2021-11-18 17:46:37.497 [main] INFO  ParkingService - Please select vehicle type from menu
-2021-11-18 17:46:37.497 [main] INFO  ParkingService - 1 CAR
-2021-11-18 17:46:37.497 [main] INFO  ParkingService - 2 BIKE
-2021-11-18 17:46:37.497 [main] INFO  ParkingService - Please type the vehicle registration number and press enter key
-2021-11-18 17:46:37.498 [main] INFO  ParkingService - ============================================================================================
-2021-11-18 17:46:37.498 [main] INFO  ParkingService - Generated Ticket and saved in DataBase
-2021-11-18 17:46:37.498 [main] INFO  ParkingService - Please park your vehicle in spot number: 1
-2021-11-18 17:46:37.498 [main] INFO  ParkingService - Recorded in-time for vehicle number: ABCDEF / In-time The: 2021-11-18 at 17:46:37.498
-2021-11-18 17:46:37.498 [main] INFO  ParkingService - --------------------------------------------------------------------------------------------
-2021-11-18 17:46:37.503 [main] INFO  ParkingService - Please type the vehicle registration number and press enter key
-2021-11-18 17:46:38.108 [main] INFO  DataBaseConfig - Create DB connection
-2021-11-18 17:46:38.121 [main] INFO  DataBaseConfig - Closing Result Set
-2021-11-18 17:46:38.121 [main] INFO  DataBaseConfig - Closing Prepared Statement
-2021-11-18 17:46:38.121 [main] INFO  DataBaseConfig - Closing DB connection
-2021-11-18 17:46:38.122 [main] INFO  ParkingService - Unable to update ticket information. Error occurred
+2021-11-18 18:30:24.934 [main] INFO  ParkingService - Please select vehicle type from menu
+2021-11-18 18:30:24.934 [main] INFO  ParkingService - 1 CAR
+2021-11-18 18:30:24.935 [main] INFO  ParkingService - 2 BIKE
+2021-11-18 18:30:24.936 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:24.955 [main] INFO  DataBaseTestConfig - Closing Result Set
+2021-11-18 18:30:24.955 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:24.956 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:25.043 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:25.057 [main] INFO  DataBaseTestConfig - Closing Result Set
+2021-11-18 18:30:25.057 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:25.058 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:25.064 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:25.078 [main] INFO  DataBaseTestConfig - Closing Result Set
+2021-11-18 18:30:25.078 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:25.079 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:25.079 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:25.104 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:25.104 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:25.122 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:25.148 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:25.151 [main] INFO  ParkingService - Please select vehicle type from menu
+2021-11-18 18:30:25.152 [main] INFO  ParkingService - 1 CAR
+2021-11-18 18:30:25.152 [main] INFO  ParkingService - 2 BIKE
+2021-11-18 18:30:25.153 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:25.173 [main] INFO  DataBaseTestConfig - Closing Result Set
+2021-11-18 18:30:25.174 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:25.174 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:25.174 [main] INFO  ParkingService - Please type the vehicle registration number and press enter key
+2021-11-18 18:30:25.175 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:25.190 [main] INFO  DataBaseTestConfig - Closing Result Set
+2021-11-18 18:30:25.202 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:25.202 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:25.203 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:25.215 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:25.216 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:25.216 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:25.228 [main] INFO  DataBaseTestConfig - Closing Result Set
+2021-11-18 18:30:25.228 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:25.229 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:25.229 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:25.240 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:25.240 [main] INFO  ParkingService - ============================================================================================
+2021-11-18 18:30:25.240 [main] INFO  ParkingService - Generated Ticket and saved in DataBase
+2021-11-18 18:30:25.240 [main] INFO  ParkingService - Please park your vehicle in spot number: 1
+2021-11-18 18:30:25.241 [main] INFO  ParkingService - Recorded in-time for vehicle number: ABCDEF / In-time The: 2021-11-18 at 18:30:25.216
+2021-11-18 18:30:25.241 [main] INFO  ParkingService - --------------------------------------------------------------------------------------------
+2021-11-18 18:30:25.241 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:25.251 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:25.251 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:25.251 [main] INFO  ParkingService - Please select vehicle type from menu
+2021-11-18 18:30:25.252 [main] INFO  ParkingService - 1 CAR
+2021-11-18 18:30:25.252 [main] INFO  ParkingService - 2 BIKE
+2021-11-18 18:30:25.252 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:25.261 [main] INFO  DataBaseTestConfig - Closing Result Set
+2021-11-18 18:30:25.262 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:25.262 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:25.262 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:25.276 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:25.276 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:25.278 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:25.294 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:25.295 [main] INFO  ParkingService - Please select vehicle type from menu
+2021-11-18 18:30:25.295 [main] INFO  ParkingService - 1 CAR
+2021-11-18 18:30:25.296 [main] INFO  ParkingService - 2 BIKE
+2021-11-18 18:30:25.296 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:25.304 [main] INFO  DataBaseTestConfig - Closing Result Set
+2021-11-18 18:30:25.304 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:25.305 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:25.305 [main] INFO  ParkingService - Please select vehicle type from menu
+2021-11-18 18:30:25.305 [main] INFO  ParkingService - 1 CAR
+2021-11-18 18:30:25.305 [main] INFO  ParkingService - 2 BIKE
+2021-11-18 18:30:25.306 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:25.314 [main] INFO  DataBaseTestConfig - Closing Result Set
+2021-11-18 18:30:25.314 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:25.314 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:25.314 [main] INFO  ParkingService - Please type the vehicle registration number and press enter key
+2021-11-18 18:30:25.315 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:25.326 [main] INFO  DataBaseTestConfig - Closing Result Set
+2021-11-18 18:30:25.326 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:25.327 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:25.327 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:25.336 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:25.336 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:25.337 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:25.344 [main] INFO  DataBaseTestConfig - Closing Result Set
+2021-11-18 18:30:25.345 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:25.345 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:25.345 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:25.354 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:25.355 [main] INFO  ParkingService - ============================================================================================
+2021-11-18 18:30:25.355 [main] INFO  ParkingService - Generated Ticket and saved in DataBase
+2021-11-18 18:30:25.355 [main] INFO  ParkingService - Please park your vehicle in spot number: 1
+2021-11-18 18:30:25.355 [main] INFO  ParkingService - Recorded in-time for vehicle number: ABCDEF / In-time The: 2021-11-18 at 18:30:25.337
+2021-11-18 18:30:25.355 [main] INFO  ParkingService - --------------------------------------------------------------------------------------------
+2021-11-18 18:30:25.355 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:25.363 [main] INFO  DataBaseTestConfig - Closing Result Set
+2021-11-18 18:30:25.363 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:25.364 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:25.364 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:25.371 [main] INFO  DataBaseTestConfig - Closing Result Set
+2021-11-18 18:30:25.371 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:25.371 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:25.371 [main] INFO  ParkingService - Please type the vehicle registration number and press enter key
+2021-11-18 18:30:25.372 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:25.383 [main] INFO  DataBaseTestConfig - Closing Result Set
+2021-11-18 18:30:25.383 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:25.383 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:25.986 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:25.996 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:25.996 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:25.996 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:26.004 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:26.004 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:26.004 [main] INFO  ParkingService - --------------------------------------------------------------------------------------------
+2021-11-18 18:30:26.004 [main] INFO  ParkingService - Please pay the parking fare: 0.0€ for: 0 minutes of park.
+2021-11-18 18:30:26.004 [main] INFO  ParkingService - Recorded out-time for vehicle number: ABCDEF / Out-time The: 2021-11-18 at 18:30:25.984
+2021-11-18 18:30:26.004 [main] INFO  ParkingService - ============================================================================================
+2021-11-18 18:30:26.005 [main] INFO  ParkingService - Please select vehicle type from menu
+2021-11-18 18:30:26.005 [main] INFO  ParkingService - 1 CAR
+2021-11-18 18:30:26.005 [main] INFO  ParkingService - 2 BIKE
+2021-11-18 18:30:26.005 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:26.012 [main] INFO  DataBaseTestConfig - Closing Result Set
+2021-11-18 18:30:26.012 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:26.012 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:26.012 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:26.020 [main] INFO  DataBaseTestConfig - Closing Result Set
+2021-11-18 18:30:26.020 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:26.020 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:26.020 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:26.031 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:26.032 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:26.032 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:26.041 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:26.042 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:26.057 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:26.058 [main] INFO  ParkingService - Please select vehicle type from menu
+2021-11-18 18:30:26.058 [main] INFO  ParkingService - 1 CAR
+2021-11-18 18:30:26.058 [main] INFO  ParkingService - 2 BIKE
+2021-11-18 18:30:26.058 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:26.066 [main] INFO  DataBaseTestConfig - Closing Result Set
+2021-11-18 18:30:26.066 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:26.067 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:26.067 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:26.087 [main] INFO  DataBaseTestConfig - Closing Result Set
+2021-11-18 18:30:26.087 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:26.088 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:26.088 [main] INFO  ParkingService - Please select vehicle type from menu
+2021-11-18 18:30:26.088 [main] INFO  ParkingService - 1 CAR
+2021-11-18 18:30:26.088 [main] INFO  ParkingService - 2 BIKE
+2021-11-18 18:30:26.088 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:26.097 [main] INFO  DataBaseTestConfig - Closing Result Set
+2021-11-18 18:30:26.097 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:26.098 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:26.098 [main] INFO  ParkingService - Please type the vehicle registration number and press enter key
+2021-11-18 18:30:26.098 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:26.105 [main] INFO  DataBaseTestConfig - Closing Result Set
+2021-11-18 18:30:26.105 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:26.105 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:26.105 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:26.113 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:26.113 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:26.113 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:26.120 [main] INFO  DataBaseTestConfig - Closing Result Set
+2021-11-18 18:30:26.120 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:26.121 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:26.121 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:26.128 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:26.128 [main] INFO  ParkingService - ============================================================================================
+2021-11-18 18:30:26.129 [main] INFO  ParkingService - Generated Ticket and saved in DataBase
+2021-11-18 18:30:26.129 [main] INFO  ParkingService - Please park your vehicle in spot number: 1
+2021-11-18 18:30:26.129 [main] INFO  ParkingService - Recorded in-time for vehicle number: ABCDEF / In-time The: 2021-11-18 at 18:30:26.113
+2021-11-18 18:30:26.129 [main] INFO  ParkingService - --------------------------------------------------------------------------------------------
+2021-11-18 18:30:26.129 [main] INFO  ParkingService - Please select vehicle type from menu
+2021-11-18 18:30:26.129 [main] INFO  ParkingService - 1 CAR
+2021-11-18 18:30:26.129 [main] INFO  ParkingService - 2 BIKE
+2021-11-18 18:30:26.130 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:26.138 [main] INFO  DataBaseTestConfig - Closing Result Set
+2021-11-18 18:30:26.138 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:26.138 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:26.139 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:26.145 [main] INFO  DataBaseTestConfig - Closing Result Set
+2021-11-18 18:30:26.146 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:26.146 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:26.146 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:26.153 [main] INFO  DataBaseTestConfig - Closing Result Set
+2021-11-18 18:30:26.153 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:26.154 [main] INFO  DataBaseTestConfig - Closing DB connection
+2021-11-18 18:30:26.154 [main] INFO  DataBaseTestConfig - Create DB connection
+2021-11-18 18:30:26.161 [main] INFO  DataBaseTestConfig - Closing Prepared Statement
+2021-11-18 18:30:26.162 [main] INFO  DataBaseTestConfig - Closing DB connection
