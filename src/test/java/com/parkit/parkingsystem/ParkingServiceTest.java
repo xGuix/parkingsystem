@@ -87,7 +87,6 @@ class ParkingServiceTest {
 		when(parkingSpotDAO.checkIfUserAlreadyIn(anyString())).thenReturn(true);
 		// WHEN
 		parkingService.processIncomingVehicle();
-
 		// THEN
 		verify(inputReaderUtil, Mockito.times(1)).readSelection();
 		verify(parkingSpotDAO, Mockito.times(1)).getNextAvailableSlot(ParkingType.CAR);
@@ -139,7 +138,6 @@ class ParkingServiceTest {
     	// WHEN
         ticket.setRecurrentUser(true);
 		parkingService.processExitingVehicle();
-
 		// THEN
         verify(ticketDAO, Mockito.times(1)).updateTicket(any(Ticket.class));
 	    assertEquals(true, ticket.getRecurrentUser());
